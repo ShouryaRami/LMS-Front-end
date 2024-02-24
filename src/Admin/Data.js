@@ -1,4 +1,5 @@
-const Data =[
+import axios from "axios";
+ const Data =[
     {
         id: "1",
         company_name: "tech Nishal",
@@ -36,5 +37,18 @@ const Data =[
         company_address: "satellite 4",
     },
 ]
+
+export const data_2 = async()=>{
+    try {
+        const respo = await axios.get("http://localhost:5001/admin/getAllcompanies");
+        return respo
+//   console.log('respo',respo.data)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+
 
 export default Data;

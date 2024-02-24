@@ -2,9 +2,19 @@ import React, { useState } from 'react';
 import Navbar from './Navbar';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Alert } from '@mui/material';
 import Data from './Data';
-
+import { data_2 } from './Data';
 function Dashboard() {
+    let fdata;
+    data_2().then((rdata)=>{
+        // console.log("shourya",rdata)
+         fdata = rdata.data.response
+        console.log("API Data",fdata)
+    }).catch((err)=>{
+        console.log('data not fetcher',err)
+    });
 
+
+    // console.log(data2)
     //All state for data, dialog open and close, for dilog type (add,edit and info)
     const [data, setData] = useState(Data);
     const [dialogOpen, setDialogOpen] = useState(false);
