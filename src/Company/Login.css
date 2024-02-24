@@ -2,7 +2,7 @@
     width: 100%;
     height: auto;
     min-height: 100vh;
-    background: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+    background:linear-gradient(to left, #30cfd0 40%, #330867 100%);
     box-sizing: border-box;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
