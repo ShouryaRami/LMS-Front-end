@@ -1,18 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import Navbar from './Navbar';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Alert } from '@mui/material';
 import Data from './Data';
 import { data_2 } from './Data';
 function Dashboard() {
-    let fdata;
-    data_2().then((rdata)=>{
-        // console.log("shourya",rdata)
-         fdata = rdata.data.response
-        console.log("API Data",fdata)
-    }).catch((err)=>{
-        console.log('data not fetcher',err)
-    });
-
+   
 
     // console.log(data2)
     //All state for data, dialog open and close, for dilog type (add,edit and info)
@@ -33,6 +25,24 @@ function Dashboard() {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [deletedCompany, setDeletedCompany] = useState(null);
     const [alert, setAlert] = useState({ open: false, message: '' });
+
+
+    useEffect(() => {
+     const fetchData = async () => {
+       try {
+         // Simulating fetching real data from an API endpoint
+         const rdata = await data_2();
+         let fdata = rdata.data;
+         console.log("API Data", fdata.response);
+         setData(fdata.response); // Set the real data in the state
+       } catch (err) {
+         console.log("data not fetched", err);
+       }
+     };
+   
+     fetchData();
+   }, []);
+   
 
     // Function to open dialog for add, edit or view company details
     const handleDialogOpen = (type, companyData) => {
