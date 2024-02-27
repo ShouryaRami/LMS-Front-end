@@ -9,6 +9,7 @@ import Login2 from './Admin/LoginOld';
 import CompanyDashboard from './Company/CompanyDashboard';
 import LoginCompany from './Company/LoginCompany';
 import CompanyRegistration from './Company/CompanyRegistration';
+import AdminProfile from './Admin/AdminProfile';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path='/Admin/Login' element={<Login/>}/>
             {/* <Route path='/Admin/Login2' element={<Login2/>}/> */}
             <Route path='/Admin/Dashboard' element={<Dashboard/>}/>
+            <Route path='/Admin/Profile' element={<AdminProfile/>} />
             {/* <Route path='/' element={<StudentTable/>}/> */}
             {/* <Route path='/Admin/Dashboard2' element={<Dashboard2/>}/> */}
             <Route path='/Login' element={<LoginCompany/>}/>

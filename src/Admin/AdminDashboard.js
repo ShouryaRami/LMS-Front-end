@@ -4,7 +4,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import Data from './Data';
 import { data_2 } from './Data';
 function Dashboard() {
-   
+
 
     // console.log(data2)
     //All state for data, dialog open and close, for dilog type (add,edit and info)
@@ -28,21 +28,22 @@ function Dashboard() {
 
 
     useEffect(() => {
-     const fetchData = async () => {
-       try {
-         // Simulating fetching real data from an API endpoint
-         const rdata = await data_2();
-         let fdata = rdata.data;
-         console.log("API Data", fdata.response);
-         setData(fdata.response); // Set the real data in the state
-       } catch (err) {
-         console.log("data not fetched", err);
-       }
-     };
-   
-     fetchData();
-   }, []);
-   
+        const fetchData = async () => {
+            try {
+                // Simulating fetching real data from an API endpoint
+                const rdata = await data_2();
+                let fdata = rdata.data;
+                console.log("API Data", fdata.response);
+                setData(fdata.response); // Set the real data in the state
+            } catch (err) {
+                console.log("data not fetched", err);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
 
     // Function to open dialog for add, edit or view company details
     const handleDialogOpen = (type, companyData) => {
@@ -149,6 +150,8 @@ function Dashboard() {
                     </TableContainer>
                 </div>
             </div>
+
+            {/*Edit, Add and Unfo Dialog Box */}
             <Dialog open={dialogOpen} onClose={handleDialogClose}>
                 <DialogTitle>{dialogType === 'add' ? 'Add Company' : (dialogType === 'edit' ? 'Edit Company' : (dialogType === 'info' ? "Company Information" : ''))}</DialogTitle>
                 <DialogContent>
@@ -202,7 +205,7 @@ function Dashboard() {
                             id="company_logo"
                             name="company_logo"
                             label="Logo"
-                            type="file"
+                            type="image"
                             fullWidth
                             variant="standard"
                             value={formData.company_logo}
@@ -244,6 +247,8 @@ function Dashboard() {
                     <Button type="submit" onClick={handleAddOrUpdateCompany} color="primary">{dialogType === 'add' ? 'Add' : (dialogType === 'edit' ? 'edit' : (dialogType === 'info' ? 'Done' : {}))}</Button>
                 </DialogActions>
             </Dialog>
+
+            {/*Delete Dilog box */}
             <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
                 <DialogTitle>Confirm Delete</DialogTitle>
                 <DialogContent>

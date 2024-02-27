@@ -132,7 +132,7 @@ function CompanyDashboard() {
 
             {/*Edit, Add and Info Dialog box*/}
             <Dialog open={dialogOpen} onClose={handleDialogClose}>
-                <DialogTitle>{dialogType === 'add' ? 'Add candidate' : 'Edit candidate'}</DialogTitle>
+            <DialogTitle>{dialogType === 'add' ? 'Add Company' : (dialogType === 'edit' ? 'Edit Company' : (dialogType === 'info' ? "Company Information" : ''))}</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         <TextField
