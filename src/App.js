@@ -10,6 +10,7 @@ import CompanyDashboard from './Company/CompanyDashboard';
 import LoginCompany from './Company/LoginCompany';
 import CompanyRegistration from './Company/CompanyRegistration';
 import AdminProfile from './Admin/AdminProfile';
+import PasswordReset from './Company/PasswordReset';
 
 function App() {
   return (
@@ -17,15 +18,20 @@ function App() {
       <div className="App">
         <Router>
           <Routes>
+
+            {/*Admin Pages*/}
             <Route path='/Admin/Login' element={<Login/>}/>
-            {/* <Route path='/Admin/Login2' element={<Login2/>}/> */}
             <Route path='/Admin/Dashboard' element={<Dashboard/>}/>
             <Route path='/Admin/Profile' element={<AdminProfile/>} />
+            {/* <Route path='/Admin/Login2' element={<Login2/>}/> */}
             {/* <Route path='/' element={<StudentTable/>}/> */}
             {/* <Route path='/Admin/Dashboard2' element={<Dashboard2/>}/> */}
+
+            {/*Company Pages*/}
             <Route path='/Login' element={<LoginCompany/>}/>
             <Route path='/Company/Dashboard' element={<CompanyDashboard/>}/>
             <Route path='/Company_Registration'element={<CompanyRegistration/>}/>
+            <Route path='/ForgetPassword' element={<PasswordReset/>}/>
           </Routes>
         </Router>
       </div>
