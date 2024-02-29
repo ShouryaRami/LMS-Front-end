@@ -38,7 +38,7 @@ import axios from "axios";
     },
 ]
 
-export const data_2 = async()=>{
+export const data_main = async()=>{
     try {
         const respo = await axios.get("http://localhost:5001/admin/getAllcompanies");
         return respo
