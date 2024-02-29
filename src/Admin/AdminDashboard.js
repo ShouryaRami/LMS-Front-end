@@ -1,6 +1,6 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Alert } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Alert, Container } from '@mui/material';
 import Data from './Data';
 import { data_2 } from './Data';
 function Dashboard() {
@@ -112,44 +112,66 @@ function Dashboard() {
         setDeletedCompany(null);
     };
 
+
+    //For Search Bar
+    const [searchItem, setSearchItem] = useState('');
+    const [filteredData, setFilteredData] = useState([]);
+
+    const handleSearchChange = (event) => {
+        setSearchItem(event.target.value); // Update searchItem state as the user types
+    };
+
+    useEffect(() => {
+        if (!searchItem) {
+            setFilteredData(data); // If searchItem is empty, set filteredData to all data
+            return;
+        }
+        const filtered = data.filter(item =>
+            item.company_name.toLowerCase().includes(searchItem.toLowerCase()) ||
+            item.company_email.toLowerCase().includes(searchItem.toLowerCase()) // Filter data based on company name or email
+        );
+        setFilteredData(filtered);
+    }, [searchItem, data]);
+
     return (
         <>
             <Navbar />
-            <div>
-                <div style={{ padding: '20px', display: "flex", alignItems: 'center' }}>
-                    <TableContainer component={Paper}>
-                        <Table aria-label="simple table">
-                            <TableHead>
-                                <Button variant="outlined" color="primary" onClick={() => handleDialogOpen('add')}>
-                                    Add Company
-                                </Button>
-                            </TableHead>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell><b>Company Name</b></TableCell>
-                                    <TableCell><b>Email</b></TableCell>
-                                    <TableCell><b>Password</b></TableCell>
-                                    <TableCell><b>Action</b></TableCell>
+            <Container maxWidth="xl" sx={{ minHeight: 'calc(100vh - 64px - 128px)', display: 'flex', flexDirection: 'column', paddingTop: 4, paddingBottom: 4 }}>
+                <TextField
+                    label="Search"
+                    variant="outlined"
+                    value={searchItem}
+                    onChange={handleSearchChange}
+                    sx={{ marginBottom: 2 }}
+                />
+                <Button variant="outlined" color="primary" sx={{ marginBottom: 2 }} onClick={() => handleDialogOpen('add')}>Add Company</Button> {/* Add Company button */}
+                <TableContainer component={Paper}>
+                    <Table aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell><b>Company Name</b></TableCell>
+                                <TableCell><b>Email</b></TableCell>
+                                <TableCell><b>Password</b></TableCell>
+                                <TableCell><b>Action</b></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {filteredData.map((item) => (
+                                <TableRow key={item.id}>
+                                    <TableCell>{item.company_name}</TableCell>
+                                    <TableCell>{item.company_email}</TableCell>
+                                    <TableCell>{item.company_password}</TableCell>
+                                    <TableCell>
+                                        <Button size="small" onClick={() => handleDialogOpen('edit', item)}>Edit</Button>
+                                        <Button size="small" onClick={() => handleConfirmDelete(item)}>Delete</Button>
+                                        <Button size="small" onClick={() => handleDialogOpen('info', item)}>Info</Button>
+                                    </TableCell>
                                 </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {data.map((item) => (
-                                    <TableRow key={item.id}>
-                                        <TableCell>{item.company_name}</TableCell>
-                                        <TableCell>{item.company_email}</TableCell>
-                                        <TableCell>{item.company_password}</TableCell>
-                                        <TableCell>
-                                            <Button size="small" onClick={() => handleDialogOpen('edit', item)}>Edit</Button>
-                                            <Button size="small" onClick={() => handleConfirmDelete(item)}>Delete</Button>
-                                            <Button size="small" onClick={() => handleDialogOpen('info', item)}>Info</Button>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-            </div>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Container>
 
             {/*Edit, Add and Unfo Dialog Box */}
             <Dialog open={dialogOpen} onClose={handleDialogClose}>
