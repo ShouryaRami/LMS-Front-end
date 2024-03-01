@@ -1,3 +1,4 @@
+import axios from "axios";
 const Data =[
     {
         id: "1",
@@ -36,5 +37,15 @@ const Data =[
         candidate_address: "gota",
     },
 ]
+
+export const data_company_main = async()=>{
+    try {
+        const respo = await axios.get("http://localhost:5001/admin/getAllCandidates");
+        return respo
+//   console.log('respo',respo.data)
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 export default Data;
