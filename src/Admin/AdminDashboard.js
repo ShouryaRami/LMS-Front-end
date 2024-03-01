@@ -22,7 +22,6 @@ import Data from "./Data";
 import { data_main } from "./Data";
 import axios from "axios";
 
-
 function Dashboard() {
   // console.log(data2)
   //All state for data, dialog open and close, for dilog type (add,edit and info)
@@ -105,21 +104,21 @@ function Dashboard() {
           "http://localhost:5001/admin/addCompany",
           newCompany
         );
-        console.log('new comp',newCompany);
+        console.log("new comp", newCompany);
         // localStorage.setItem("token", res.data.admin_token);
       } catch (err) {
         console.log("err", err);
         // setAlert(true);
       }
-    } 
-    else { //Edit Login
-    const updatedCompany = { ...formData };
+    } else {
+      //Edit Login
+      const updatedCompany = { ...formData };
       try {
         let res = await axios.post(
           "http://localhost:5001/admin/updateCompany",
           updatedCompany
         );
-        console.log('Updated comp',res);
+        console.log("Updated comp", res);
         // localStorage.setItem("token", res.data.admin_token);
       } catch (err) {
         console.log("err", err);
@@ -136,7 +135,22 @@ function Dashboard() {
   };
 
   // Function to delete a company
-  const handleDeleteCompany = () => {
+  const handleDeleteCompany = async (justdata) => {
+    //! just trying
+
+    try {
+      let res = await axios.post(`http://localhost:5001/admin/updateCompany`, {
+        _id: justdata,
+        isDeleted: true,
+      });
+      console.log(res);
+    } catch (err) {
+      console.log("err", err);
+      // setAlert(true);
+    }
+
+    //? ///////////////// Front end deletion
+
     const updatedCompanies = data.filter(
       (company) => company._id !== deletedCompany._id
     );
@@ -269,7 +283,7 @@ function Dashboard() {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-          <TextField
+            <TextField
               autoFocus
               required
               margin="dense"
@@ -280,7 +294,7 @@ function Dashboard() {
               fullWidth
               variant="standard"
               value={formData._id}
-            //   onChange={handleChange}
+              //   onChange={handleChange}
               InputProps={{ readOnly: true }}
             />
             <TextField
@@ -403,7 +417,10 @@ function Dashboard() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>Disagree</Button>
-          <Button onClick={handleDeleteCompany} color="primary">
+          <Button
+            onClick={() => handleDeleteCompany(deletedCompany._id)}
+            color="primary"
+          >
             Agree
           </Button>
         </DialogActions>
