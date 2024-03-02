@@ -14,8 +14,8 @@ import axios from "axios";
 
 function LoginCompany() {
   const [obj, setLoginID] = useState({
-    admin_username: "",
-    admin_password: "",
+    company_email: "",
+    company_password: "",
   });
   const [alert, setAlert] = useState(false);
 
@@ -24,14 +24,15 @@ function LoginCompany() {
   let onHandleClick = async () => {
     try {
       let res = await axios.post(
-        "http://localhost:5001/admin/admin_login",
+        "http://localhost:5001/company/company_login",
         obj
       );
-      console.log("obj-----", obj)
-      console.log("res=------", res.data);
-      console.log("admin_token=------", res.data.admin_token);
-      localStorage.setItem("token", res.data.admin_token);
-      toNavigate("/Admin/Dashboard");
+      if (res.data.isSuccess === true) {
+        toNavigate(`/Company/Dashboard/${res.data.companyID}`);
+      }
+      if (res.data.isSuccess === false) {
+        toNavigate(`/errorpage`);
+      }
     } catch (err) {
       console.log("err");
       setAlert(true);
@@ -53,7 +54,7 @@ function LoginCompany() {
                 label="User Name"
                 variant="outlined"
                 onChange={(e) =>
-                  setLoginID({ ...obj, admin_username: e.target.value })
+                  setLoginID({ ...obj, company_email: e.target.value })
                 }
                 style={{
                   width: "100%",
@@ -71,7 +72,7 @@ function LoginCompany() {
                 label="Password"
                 variant="outlined"
                 onChange={(e) =>
-                  setLoginID({ ...obj, admin_password: e.target.value })
+                  setLoginID({ ...obj, company_password: e.target.value })
                 }
                 style={{ width: "100%" }}
                 type="password"
@@ -101,10 +102,8 @@ function LoginCompany() {
               >
                 Login
               </Button>
-              
-              <div>
-                {"Don't have account?"}
-                </div>
+
+              <div>{"Don't have account?"}</div>
               <Link href="/Company_Registration" underline="hover">
                 {"Sign Up?"}
               </Link>

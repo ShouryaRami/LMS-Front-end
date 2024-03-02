@@ -1,4 +1,4 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes ,useParams} from 'react-router-dom';
 import './App.css';
 import Login from './Admin/Login';
 import Dashboard from './Admin/AdminDashboard';
@@ -11,6 +11,7 @@ import LoginCompany from './Company/LoginCompany';
 import CompanyRegistration from './Company/CompanyRegistration';
 import AdminProfile from './Admin/AdminProfile';
 import PasswordReset from './Company/PasswordReset';
+import ErrorPage from './Company/ErrorPage';
 
 function App() {
   return (
@@ -29,7 +30,8 @@ function App() {
 
             {/*Company Pages*/}
             <Route path='/Login' element={<LoginCompany/>}/>
-            <Route path='/Company/Dashboard' element={<CompanyDashboard/>}/>
+            <Route path='/errorpage' element={<ErrorPage/>}/>
+            <Route path='/Company/Dashboard/:companyID' element={<CompanyDashboard/>}/>
             <Route path='/Company_Registration'element={<CompanyRegistration/>}/>
             <Route path='/ForgetPassword' element={<PasswordReset/>}/>
           </Routes>
