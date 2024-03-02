@@ -29,7 +29,8 @@ function Login() {
       console.log("obj-----", obj);
       console.log("res=------", res.data.isSuccess);
       console.log("admin_token=------", res);
-      localStorage.setItem("token", res.data.admin_token);
+      localStorage.setItem("admin_token", res.data.admin_token);
+      console.log('login tokoen',localStorage.getItem("admin_token"))
       if (res.data.isSuccess === true) {
         toNavigate("/Admin/Dashboard");
       }else{

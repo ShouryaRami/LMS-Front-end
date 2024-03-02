@@ -140,14 +140,12 @@ function CompanyDashboard() {
 
   // Function to delete a candidate
   const handleDeletecandidate = async (candi_data) => {
+    console.log(candi_data)
     try {
-      let res = await axios.post(
-        `http://localhost:5001/admin/updateCandidates`,
-        {
+      let res = await axios.post(`http://localhost:5001/company/updateCandidates`,{
           _id: candi_data,
-          isDeleted: true,
-        }
-      );
+          candidate_isDeleted: true,
+        });
       console.log(res);
     } catch (err) {
       console.log("err", err);
@@ -433,7 +431,7 @@ function CompanyDashboard() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>Disagree</Button>
-          <Button onClick={handleDeletecandidate} color="primary">
+          <Button onClick={()=>handleDeletecandidate(deletedCandidate._id)} color="primary">
             Agree
           </Button>
         </DialogActions>
