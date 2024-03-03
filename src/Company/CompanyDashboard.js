@@ -98,18 +98,16 @@ function CompanyDashboard() {
   // Function to add or update candidate details
   const handleAddOrUpdatecandidate = async () => {
     if (dialogType === "add") {
-      const newcandidate = {...formData , companyID : params.companyID};
+      const newcandidate = { ...formData, companyID: params.companyID };
       try {
         let res = await axios.post(
           "http://localhost:5001/company/addCandidates",
-          newcandidate
-        );
-        console.log(
-          "new candidate",
           newcandidate,
-          "\n",
-          "backend response : ",
-          res
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("company_token")}`,
+            },
+          }
         );
       } catch (err) {
         console.log("err", err);
@@ -121,9 +119,13 @@ function CompanyDashboard() {
       try {
         let res = await axios.post(
           "http://localhost:5001/company/updateCandidates",
-          updatedcandidates
+          updatedcandidates,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("company_token")}`,
+            },
+          }
         );
-        console.log("Updated Candidates", res);
       } catch (err) {
         console.log("err", err);
         // setAlert(true);
@@ -140,13 +142,19 @@ function CompanyDashboard() {
 
   // Function to delete a candidate
   const handleDeletecandidate = async (candi_data) => {
-    console.log(candi_data)
     try {
-      let res = await axios.post(`http://localhost:5001/company/updateCandidates`,{
+      let res = await axios.post(
+        `http://localhost:5001/company/updateCandidates`,
+        {
           _id: candi_data,
           candidate_isDeleted: true,
-        });
-      console.log(res);
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("company_token")}`,
+          },
+        }
+      );
     } catch (err) {
       console.log("err", err);
       // setAlert(true);
@@ -183,8 +191,8 @@ function CompanyDashboard() {
     }
     const filtered = data.filter(
       (item) =>
-        item.company_name.toLowerCase().includes(searchItem.toLowerCase()) ||
-        item.company_email.toLowerCase().includes(searchItem.toLowerCase()) // Filter data based on company name or email
+        item.candidate_name.toLowerCase().includes(searchItem.toLowerCase()) ||
+        item.candidate_email.toLowerCase().includes(searchItem.toLowerCase()) // Filter data based on company name or email
     );
     setFilteredData(filtered);
   }, [searchItem, data]);
@@ -431,7 +439,10 @@ function CompanyDashboard() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>Disagree</Button>
-          <Button onClick={()=>handleDeletecandidate(deletedCandidate._id)} color="primary">
+          <Button
+            onClick={() => handleDeletecandidate(deletedCandidate._id)}
+            color="primary"
+          >
             Agree
           </Button>
         </DialogActions>

@@ -110,7 +110,6 @@ function Dashboard() {
             },
           }
         );
-        // localStorage.setItem("token", res.data.admin_token);
       } catch (err) {
         console.log("err", err);
         // setAlert(true);
@@ -148,10 +147,18 @@ function Dashboard() {
     //! just trying
 
     try {
-      let res = await axios.post(`http://localhost:5001/admin/updateCompany`, {
-        _id: comp_data,
-        isDeleted: true,
-      });
+      let res = await axios.post(
+        `http://localhost:5001/admin/updateCompany`,
+        {
+          _id: comp_data,
+          isDeleted: true,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+          },
+        }
+      );
       console.log(res);
     } catch (err) {
       console.log("err", err);

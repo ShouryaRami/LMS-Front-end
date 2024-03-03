@@ -26,14 +26,11 @@ function Login() {
         "http://localhost:5001/admin/admin_login",
         obj
       );
-      console.log("obj-----", obj);
-      console.log("res=------", res.data.isSuccess);
-      console.log("admin_token=------", res);
-      localStorage.setItem("admin_token", res.data.admin_token);
-      console.log('login tokoen',localStorage.getItem("admin_token"))
+
       if (res.data.isSuccess === true) {
+        localStorage.setItem("admin_token", res.data.admin_token);
         toNavigate("/Admin/Dashboard");
-      }else{
+      } else {
         setAlert(true);
       }
     } catch (err) {

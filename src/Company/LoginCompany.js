@@ -27,7 +27,9 @@ function LoginCompany() {
         "http://localhost:5001/company/company_login",
         obj
       );
+
       if (res.data.isSuccess === true) {
+        localStorage.setItem("company_token", res.data.company_token);
         toNavigate(`/Company/Dashboard/${res.data.companyID}`);
       }
       if (res.data.isSuccess === false) {
@@ -82,7 +84,6 @@ function LoginCompany() {
             </div>
             <ButtonGroup
               color="primary"
-              disabled={false}
               orientation="vertical"
               size="large"
               aria-label="large button group"
@@ -91,9 +92,13 @@ function LoginCompany() {
               <Button
                 color="primary"
                 style={{
-                  backgroundColor: "rgb(0,0,0,0.5)",
+                  backgroundColor: "black",
+                  color: "white",
+                  padding: "10px",
+                  borderRadius: "5px",
+                  marginBottom: "10px", // Adding space between buttons
                 }}
-                className="login-button !important"
+                className="login-button"
                 onClick={() => {
                   onHandleClick();
                 }}
@@ -102,9 +107,31 @@ function LoginCompany() {
               >
                 Login
               </Button>
+              <Button
+                color="primary"
+                style={{
+                  backgroundColor: "black",
+                  color: "white",
+                  padding: "10px",
+                  borderRadius: "5px",
+                  marginBottom: "10px", // Adding space between buttons
+                }}
+                className="login-button"
+                onClick={() => {
+                  onHandleClick();
+                }}
+                type="submit"
+                value="login"
+              >
+                Forgot Password?
+              </Button>
 
               <div>{"Don't have account?"}</div>
-              <Link href="/Company_Registration" underline="hover">
+              <Link
+                href="/Company_Registration"
+                underline="hover"
+                style={{ color: "white" }}
+              >
                 {"Sign Up?"}
               </Link>
               <br />
