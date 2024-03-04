@@ -41,6 +41,26 @@ function LoginCompany() {
     }
   };
 
+  let onHandleForgot = async () => {
+    try {
+      let res = await axios.post(
+        "http://localhost:5001/company/company_forgot_password",
+        obj
+      );
+
+      if (res.data.isSuccess === true) {
+        console.log(res)
+     }
+     if (res.data.isSuccess === false) {
+          toNavigate(`/errorpage`);
+          console.log(res)
+      }
+    } catch (err) {
+      console.log("err");
+      setAlert(true);
+    }
+  };
+
   return (
     <div className="login-body">
       <div className="login-box">
@@ -118,12 +138,12 @@ function LoginCompany() {
                 }}
                 className="login-button"
                 onClick={() => {
-                  onHandleClick();
+                  onHandleForgot();
                 }}
                 type="submit"
                 value="login"
               >
-                Forgot Password?
+                Forgot Password ?
               </Button>
 
               <div>{"Don't have account?"}</div>
