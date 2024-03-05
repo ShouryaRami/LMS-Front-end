@@ -15,8 +15,9 @@ import CompanyDashboard from "./Company/CompanyDashboard";
 import LoginCompany from "./Company/LoginCompany";
 import CompanyRegistration from "./Company/CompanyRegistration";
 import AdminProfile from "./Admin/AdminProfile";
-import PasswordReset from "./Company/PasswordReset";
 import ErrorPage from "./Company/ErrorPage";
+import EnterEmail from "./Company/EnterEmail";
+import PasswordReset from "./Company/PasswordReset";
 
 function App() {
   return (
@@ -43,7 +44,8 @@ function App() {
               path="/Company_Registration"
               element={<CompanyRegistration />}
             />
-            <Route path="/ForgetPassword/:company_email" element={<PasswordReset />} />
+            <Route path="/PasswordReset/:company_email" element={<PasswordReset/>} />
+            <Route path="/EnterEmail" element={<EnterEmail/>}/>
           </Routes>
         </Router>
       </div>
