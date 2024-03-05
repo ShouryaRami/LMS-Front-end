@@ -72,6 +72,7 @@ function CompanyDashboard() {
         candidate_profilePic: "",
         candidate_contact_number: "",
         candidate_address: "",
+        companyID: params.companyID, // Set companyID when adding a new candidate
       });
     }
     setDialogOpen(true);
@@ -96,43 +97,52 @@ function CompanyDashboard() {
   };
 
   // Function to add or update candidate details
-  const handleAddOrUpdatecandidate = async () => {
-    if (dialogType === "add") {
-      const newcandidate = { ...formData, companyID: params.companyID };
-      try {
-        let res = await axios.post(
-          "http://localhost:5001/company/addCandidates",
-          newcandidate,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("company_token")}`,
-            },
-          }
-        );
-      } catch (err) {
-        console.log("err", err);
-        // setAlert(true);
-      }
-    } else {
-      //Edit Logic
-      const updatedcandidates = { ...formData };
-      try {
-        let res = await axios.post(
-          "http://localhost:5001/company/updateCandidates",
-          updatedcandidates,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("company_token")}`,
-            },
-          }
-        );
-      } catch (err) {
-        console.log("err", err);
-        // setAlert(true);
-      }
+  // Function to add or update candidate details
+const handleAddOrUpdatecandidate = async () => {
+  if (dialogType === "add") {
+    const newCandidate = { ...formData, companyID: params.companyID };
+    try {
+      let res = await axios.post(
+        "http://localhost:5001/company/addCandidates",
+        newCandidate,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("company_token")}`,
+          },
+        }
+      );
+      // Update state with the new candidate data
+      setData([...data, newCandidate]); // Assuming the response does not contain the updated data
+    } catch (err) {
+      console.log("err", err);
+      // Handle error
     }
-    handleDialogClose();
-  };
+  } else {
+    // Edit Logic
+    const updatedCandidate = { ...formData };
+    try {
+      let res = await axios.post(
+        "http://localhost:5001/company/updateCandidates",
+        updatedCandidate,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("company_token")}`,
+          },
+        }
+      );
+      // Update state with the updated candidate data
+      const updatedData = data.map((item) =>
+        item._id === updatedCandidate._id ? updatedCandidate : item
+      );
+      setData(updatedData);
+    } catch (err) {
+      console.log("err", err);
+      // Handle error
+    }
+  }
+  handleDialogClose();
+};
+
 
   // Function to confirm deletion of a candidate
   const handleConfirmDelete = (candidate) => {
@@ -196,6 +206,16 @@ function CompanyDashboard() {
     );
     setFilteredData(filtered);
   }, [searchItem, data]);
+
+
+  //////////////////////
+  // Function to render candidate ID in table cells
+const renderCandidateID = (candidate) => {
+  if (!candidate._id) {
+    return <div>Loading...</div>;
+  }
+  return candidate._id;
+};
 
   return (
     <>
@@ -261,7 +281,7 @@ function CompanyDashboard() {
             <TableBody>
               {filteredData.map((item) => (
                 <TableRow key={item._id}>
-                  <TableCell>{item._id}</TableCell>
+                  <TableCell>{renderCandidateID(item)}</TableCell>
                   <TableCell>{item.candidate_name}</TableCell>
                   <TableCell>{item.candidate_email}</TableCell>
                   <TableCell>{item.candidate_password}</TableCell>

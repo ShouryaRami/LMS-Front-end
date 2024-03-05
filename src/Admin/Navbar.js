@@ -115,7 +115,7 @@ export default function Navbar() {
                                 onClose={handleClose}
                             >
                                 <MenuItem onClick={() => { toNavigate('/Admin/Profile') }}>Profile</MenuItem>
-                                <MenuItem onClick={() => { toNavigate('/Admin/Login') }}>Logout</MenuItem>
+                                <MenuItem onClick={() => { toNavigate('/Login') }}>Logout</MenuItem>
                             </Menu>
                         </div>
                     )}

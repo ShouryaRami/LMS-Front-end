@@ -97,44 +97,50 @@ function Dashboard() {
   };
 
   // Function to add or update company details
-  const handleAddOrUpdateCompany = async () => {
-    if (dialogType === "add") {
-      const newCompany = { ...formData };
-      try {
-        let res = await axios.post(
-          "http://localhost:5001/admin/addCompany",
-          newCompany,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
-            },
-          }
-        );
-      } catch (err) {
-        console.log("err", err);
-        // setAlert(true);
-      }
-    } else {
-      //Edit Logic
-      const updatedCompany = { ...formData };
-      try {
-        let res = await axios.post(
-          "http://localhost:5001/admin/updateCompany",
-          updatedCompany,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
-            },
-          }
-        );
-        console.log("new  res", res);
-      } catch (err) {
-        console.log("err", err);
-        // setAlert(true);
-      }
+  // Function to add or update company details
+const handleAddOrUpdateCompany = async () => {
+  if (dialogType === "add") {
+    const newCompany = { ...formData };
+    try {
+      let res = await axios.post(
+        "http://localhost:5001/admin/addCompany",
+        newCompany,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+          },
+        }
+      );
+      // Update state with the new company data
+      setData([...data, newCompany]); // Assuming the response does not contain the updated data
+    } catch (err) {
+      console.log("err", err);
+      // Handle error
     }
-    handleDialogClose();
-  };
+  } else {
+    //Edit Logic
+    const updatedCompany = { ...formData };
+    try {
+      let res = await axios.post(
+        "http://localhost:5001/admin/updateCompany",
+        updatedCompany,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+          },
+        }
+      );
+      // Update state with the updated company data
+      const updatedData = data.map(item => (item._id === updatedCompany._id ? updatedCompany : item));
+      setData(updatedData);
+    } catch (err) {
+      console.log("err", err);
+      // Handle error
+    }
+  }
+  handleDialogClose();
+};
+
 
   // Function to confirm deletion of a company
   const handleConfirmDelete = (company) => {
@@ -202,6 +208,13 @@ function Dashboard() {
     setFilteredData(filtered);
   }, [searchItem, data]);
 
+
+  //////////////
+  // Function to render company ID in table cells
+const renderCompanyID = (company) => {
+  return company._id ? company._id : <div>Loading...</div>;
+};
+
   return (
     <>
       <Navbar />
@@ -266,7 +279,7 @@ function Dashboard() {
             <TableBody>
               {filteredData.map((item) => (
                 <TableRow key={item._id}>
-                  <TableCell>{item._id}</TableCell>
+                  <TableCell>{renderCompanyID(item)}</TableCell>
                   <TableCell>{item.company_name}</TableCell>
                   <TableCell>{item.company_email}</TableCell>
                   <TableCell>{item.company_password}</TableCell>
