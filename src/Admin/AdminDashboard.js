@@ -21,10 +21,8 @@ import {
 import Data from "./Data";
 import { data_main } from "./Data";
 import axios from "axios";
-import { Padding, RssFeed } from "@mui/icons-material";
 
 function Dashboard() {
-  // console.log(data2)
   //All state for data, dialog open and close, for dilog type (add,edit and info)
   const [data, setData] = useState(Data);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -46,6 +44,9 @@ function Dashboard() {
 
   //State for Email dialog alert
   const [dialogalert, setDialogAlert] = useState({ open: false, message: "" });
+
+  //State for refreshing page
+  const [refresh, setRefresh] = useState("");
 
   //For fetching Data from API
   useEffect(() => {
@@ -100,60 +101,61 @@ function Dashboard() {
   };
 
   // Function to add or update company details
-const handleAddOrUpdateCompany = async () => {
-
-  //To validate Email
-  if (!isValidEmail(formData.company_email)) {
-    console.log("Invalid email format");
-    setDialogAlert({
-      open: true,
-      message:"Enter Valid Email"
-    })
-    return;
-  }
-  //
-  if (dialogType === "add") {
-    const newCompany = { ...formData };
-    try {
-      let res = await axios.post(
-        "http://localhost:5001/admin/addCompany",
-        newCompany,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
-          },
-        }
-      );
-      // Update state with the new company data
-      setData([...data, newCompany]); // Assuming the response does not contain the updated data
-    } catch (err) {
-      console.log("err", err);
-      // Handle error
+  const handleAddOrUpdateCompany = async () => {
+    //To validate Email
+    if (!isValidEmail(formData.company_email)) {
+      console.log("Invalid email format");
+      setDialogAlert({
+        open: true,
+        message: "Enter Valid Email",
+      });
+      return;
     }
-  } else {
-    //Edit Logic
-    const updatedCompany = { ...formData };
-    try {
-      let res = await axios.post(
-        "http://localhost:5001/admin/updateCompany",
-        updatedCompany,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
-          },
-        }
-      );
-      // Update state with the updated company data
-      const updatedData = data.map(item => (item._id === updatedCompany._id ? updatedCompany : item));
-      setData(updatedData);
-    } catch (err) {
-      console.log("err", err);
-      // Handle error
+    //
+    if (dialogType === "add") {
+      const newCompany = { ...formData };
+      try {
+        let res = await axios.post(
+          "http://localhost:5001/admin/addCompany",
+          newCompany,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+            },
+          }
+        );
+        // Update state with the new company data
+        setData([...data, newCompany]); // Assuming the response does not contain the updated data
+      } catch (err) {
+        console.log("err", err);
+        // Handle error
+      }
+    } else {
+      //Edit Logic
+      const updatedCompany = { ...formData };
+      try {
+        let res = await axios.post(
+          "http://localhost:5001/admin/updateCompany",
+          updatedCompany,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+            },
+          }
+        );
+        // Update state with the updated company data
+        const updatedData = data.map((item) =>
+          item._id === updatedCompany._id ? updatedCompany : item
+        );
+        setData(updatedData);
+      } catch (err) {
+        console.log("err", err);
+        // Handle error
+      }
     }
-  }
-  handleDialogClose();
-};
-
+    setRefresh(formData);
+    handleDialogClose();
+  };
 
   // Function to confirm deletion of a company
   const handleConfirmDelete = (company) => {
@@ -221,18 +223,20 @@ const handleAddOrUpdateCompany = async () => {
     setFilteredData(filtered);
   }, [searchItem, data]);
 
-
   //////////////
   // Function to render company ID in table cells
-const renderCompanyID = (company) => {
-  return company._id ? company._id : <div>Loading...</div>;
-};
+  // const renderCompanyID = (company) => {
+  //   return company._id ? company._id : <div>Loading...</div>;
+  // };
 
   //Function for Validating Email
   const isValidEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
+
+  //For re-rendering
+  useEffect(() => {}, [refresh, data]);
 
   return (
     <>
@@ -278,9 +282,9 @@ const renderCompanyID = (company) => {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>
+                {/* <TableCell>
                   <b>Company ID</b>
-                </TableCell>
+                </TableCell> */}
                 <TableCell>
                   <b>Company Name</b>
                 </TableCell>
@@ -298,7 +302,7 @@ const renderCompanyID = (company) => {
             <TableBody>
               {filteredData.map((item) => (
                 <TableRow key={item._id}>
-                  <TableCell>{renderCompanyID(item)}</TableCell>
+                  {/* <TableCell>{item._id}</TableCell> */}
                   <TableCell>{item.company_name}</TableCell>
                   <TableCell>{item.company_email}</TableCell>
                   <TableCell>{item.company_contact_number}</TableCell>
@@ -386,7 +390,9 @@ const renderCompanyID = (company) => {
               onChange={handleChange}
               error={!isValidEmail(formData.company_email)} // Check if the email is valid
               helperText={
-                !isValidEmail(formData.company_email) ? "Invalid email format" : ""
+                formData.company_email &&  !isValidEmail(formData.company_email)
+                  ? "Invalid Email Format"
+                  : ""
               } // Display error message if email is invalid
               InputProps={dialogType === "info" ? { readOnly: true } : {}}
             />
@@ -402,7 +408,11 @@ const renderCompanyID = (company) => {
               variant="standard"
               value={formData.company_password}
               onChange={handleChange}
-              InputProps={dialogType === "info" ? { readOnly: true } : {}}
+              InputProps={
+                dialogType === "info" || dialogType === "edit"
+                  ? { readOnly: true }
+                  : {}
+              }
             />
             <TextField
               autoFocus
@@ -448,16 +458,16 @@ const renderCompanyID = (company) => {
             />
           </DialogContentText>
         </DialogContent>
-        
+
         {/*Alert for email*/}
-        {dialogalert&&(
-        <Alert
-          onClose={() => setAlert({ ...dialogalert, open: false })}
-          severity="error"
-          sx={{zIndex: 9999 }}
-        >
-          {dialogalert.message}
-        </Alert>
+        {dialogalert.open && (
+          <Alert
+            onClose={() => setAlert({ ...dialogalert, open: false })}
+            severity="error"
+            sx={{ zIndex: 9999 }}
+          >
+            {dialogalert.message}
+          </Alert>
         )}
 
         <DialogActions>

@@ -46,11 +46,15 @@ function CompanyDashboard() {
 
   //State for Email dialog alert
   const [dialogalert, setDialogAlert] = useState({ open: false, message: "" });
-
+  
+  //State for refreshing page
+  const [refresh, setRefresh] = useState("");
+  
   //@ For fetching Data from API
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Simulating fetching real data from an API endpoint
         const rdata = await data_company_main(params.companyID);
         let fdata = rdata.data;
         setData(fdata.response);
@@ -59,7 +63,7 @@ function CompanyDashboard() {
       }
     };
     fetchData();
-  }, []);
+  }, [data_company_main]);
 
   // Function to open dialog for add, edit or view candidate details
   const handleDialogOpen = (type, candidateData) => {
@@ -152,6 +156,7 @@ const handleAddOrUpdatecandidate = async () => {
       // Handle error
     }
   }
+  setRefresh(formData);
   handleDialogClose();
 };
 
@@ -222,18 +227,18 @@ const handleAddOrUpdatecandidate = async () => {
 
   //////////////////////
   // Function to render candidate ID in table cells
-const renderCandidateID = (candidate) => {
-  if (!candidate._id) {
-    return <div>Loading...</div>;
-  }
-  return candidate._id;
-};
+// const renderCandidateID = (candidate) => {
+//   return candidate._id ? candidate._id : <div>...Loading</div>
+// };
 
   //Function for Validating Email
   const isValidEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
+
+  //For re-rendering
+  useEffect(() => {}, [refresh, data]);
 
   return (
     <>
@@ -279,9 +284,9 @@ const renderCandidateID = (candidate) => {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>
+                {/* <TableCell>
                   <b>Candidate ID</b>
-                </TableCell>
+                </TableCell> */}
                 <TableCell>
                   <b>Candidate Name</b>
                 </TableCell>
@@ -299,18 +304,20 @@ const renderCandidateID = (candidate) => {
             <TableBody>
               {filteredData.map((item) => (
                 <TableRow key={item._id}>
-                  <TableCell>{renderCandidateID(item)}</TableCell>
+                  {/* <TableCell>{renderCandidateID(item)}</TableCell> */}
                   <TableCell>{item.candidate_name}</TableCell>
                   <TableCell>{item.candidate_email}</TableCell>
                   <TableCell>{item.candidate_contact_number}</TableCell>
                   <TableCell>
                     <Button
+                      color="success"
                       size="small"
                       onClick={() => handleDialogOpen("edit", item)}
                     >
                       Edit
                     </Button>
                     <Button
+                      color="error"
                       size="small"
                       onClick={() => handleConfirmDelete(item)}
                     >
@@ -383,6 +390,12 @@ const renderCandidateID = (candidate) => {
               variant="standard"
               value={formData.candidate_email}
               onChange={handleChange}
+              error={!isValidEmail(formData.candidate_email)} // Check if the email is valid
+              helperText={
+                formData.candidate_email && !isValidEmail(formData.candidate_email)
+                ?"Invalid Email Format"
+                : ""
+              }// Display error message if email is invalid
               InputProps={dialogType === "info" ? { readOnly: true } : {}}
             />
             <TextField
@@ -445,7 +458,7 @@ const renderCandidateID = (candidate) => {
         </DialogContent>
 
         {/*Alert for email*/}
-        {dialogalert&&(
+        {dialogalert.open && (
         <Alert
           onClose={() => setAlert({ ...dialogalert, open: false })}
           severity="error"
