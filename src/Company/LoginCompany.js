@@ -32,8 +32,11 @@ function LoginCompany() {
         localStorage.setItem("company_token", res.data.company_token);
         toNavigate(`/Company/Dashboard/${res.data.companyID}`);
       }
-      if (res.data.isSuccess === false) {
-        toNavigate(`/errorpage`);
+      // if (res.data.isSuccess === false) {
+      //   toNavigate(`/errorpage`);
+      // }
+      else {
+        setAlert(true);
       }
     } catch (err) {
       console.log("err");

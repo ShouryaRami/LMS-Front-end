@@ -44,6 +44,7 @@ function App() {
               path="/Company_Registration"
               element={<CompanyRegistration />}
             />
+            {/* <Route path="/PasswordReset" element={<PasswordReset/>} /> */}
             <Route path="/PasswordReset/:company_email" element={<PasswordReset/>} />
             <Route path="/EnterEmail" element={<EnterEmail/>}/>
           </Routes>

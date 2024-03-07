@@ -44,6 +44,9 @@ function Dashboard() {
   const [deletedCompany, setDeletedCompany] = useState(null);
   const [alert, setAlert] = useState({ open: false, message: "" });
 
+  //State for Email dialog alert
+  const [dialogalert, setDialogAlert] = useState({ open: false, message: "" });
+
   //For fetching Data from API
   useEffect(() => {
     const fetchData = async () => {
@@ -97,8 +100,18 @@ function Dashboard() {
   };
 
   // Function to add or update company details
-  // Function to add or update company details
 const handleAddOrUpdateCompany = async () => {
+
+  //To validate Email
+  if (!isValidEmail(formData.company_email)) {
+    console.log("Invalid email format");
+    setDialogAlert({
+      open: true,
+      message:"Enter Valid Email"
+    })
+    return;
+  }
+  //
   if (dialogType === "add") {
     const newCompany = { ...formData };
     try {
@@ -215,6 +228,12 @@ const renderCompanyID = (company) => {
   return company._id ? company._id : <div>Loading...</div>;
 };
 
+  //Function for Validating Email
+  const isValidEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
   return (
     <>
       <Navbar />
@@ -269,7 +288,7 @@ const renderCompanyID = (company) => {
                   <b>Email</b>
                 </TableCell>
                 <TableCell>
-                  <b>Password</b>
+                  <b>Contact Number</b>
                 </TableCell>
                 <TableCell>
                   <b>Action</b>
@@ -282,7 +301,7 @@ const renderCompanyID = (company) => {
                   <TableCell>{renderCompanyID(item)}</TableCell>
                   <TableCell>{item.company_name}</TableCell>
                   <TableCell>{item.company_email}</TableCell>
-                  <TableCell>{item.company_password}</TableCell>
+                  <TableCell>{item.company_contact_number}</TableCell>
                   <TableCell>
                     <Button
                       color="success"
@@ -365,6 +384,10 @@ const renderCompanyID = (company) => {
               variant="standard"
               value={formData.company_email}
               onChange={handleChange}
+              error={!isValidEmail(formData.company_email)} // Check if the email is valid
+              helperText={
+                !isValidEmail(formData.company_email) ? "Invalid email format" : ""
+              } // Display error message if email is invalid
               InputProps={dialogType === "info" ? { readOnly: true } : {}}
             />
             <TextField
@@ -425,6 +448,18 @@ const renderCompanyID = (company) => {
             />
           </DialogContentText>
         </DialogContent>
+        
+        {/*Alert for email*/}
+        {dialogalert&&(
+        <Alert
+          onClose={() => setAlert({ ...dialogalert, open: false })}
+          severity="error"
+          sx={{zIndex: 9999 }}
+        >
+          {dialogalert.message}
+        </Alert>
+        )}
+
         <DialogActions>
           {dialogType === "add" || dialogType === "edit" ? (
             <Button onClick={handleDialogClose}>Cancel</Button>
@@ -444,7 +479,6 @@ const renderCompanyID = (company) => {
           </Button>
         </DialogActions>
       </Dialog>
-
       {/*Delete Dilog box */}
       <Dialog
         open={deleteDialogOpen}

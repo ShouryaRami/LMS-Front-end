@@ -44,6 +44,9 @@ function CompanyDashboard() {
   const [deletedCandidate, setDeletedCandidate] = useState(null);
   const [alert, setAlert] = useState({ open: false, message: "" });
 
+  //State for Email dialog alert
+  const [dialogalert, setDialogAlert] = useState({ open: false, message: "" });
+
   //@ For fetching Data from API
   useEffect(() => {
     const fetchData = async () => {
@@ -97,8 +100,17 @@ function CompanyDashboard() {
   };
 
   // Function to add or update candidate details
-  // Function to add or update candidate details
 const handleAddOrUpdatecandidate = async () => {
+  //To validate Email
+  if (!isValidEmail(formData.candidate_email)) {
+    console.log("Invalid email format");
+    setDialogAlert({
+      open: true,
+      message:"Enter Valid Email"
+    })
+    return;
+  }
+  //
   if (dialogType === "add") {
     const newCandidate = { ...formData, companyID: params.companyID };
     try {
@@ -217,6 +229,12 @@ const renderCandidateID = (candidate) => {
   return candidate._id;
 };
 
+  //Function for Validating Email
+  const isValidEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
   return (
     <>
       <Navbar />
@@ -271,7 +289,7 @@ const renderCandidateID = (candidate) => {
                   <b>Email</b>
                 </TableCell>
                 <TableCell>
-                  <b>Password</b>
+                  <b>Contact Number</b>
                 </TableCell>
                 <TableCell>
                   <b>Action</b>
@@ -284,7 +302,7 @@ const renderCandidateID = (candidate) => {
                   <TableCell>{renderCandidateID(item)}</TableCell>
                   <TableCell>{item.candidate_name}</TableCell>
                   <TableCell>{item.candidate_email}</TableCell>
-                  <TableCell>{item.candidate_password}</TableCell>
+                  <TableCell>{item.candidate_contact_number}</TableCell>
                   <TableCell>
                     <Button
                       size="small"
@@ -425,6 +443,18 @@ const renderCandidateID = (candidate) => {
             />
           </DialogContentText>
         </DialogContent>
+
+        {/*Alert for email*/}
+        {dialogalert&&(
+        <Alert
+          onClose={() => setAlert({ ...dialogalert, open: false })}
+          severity="error"
+          sx={{zIndex: 9999 }}
+        >
+          {dialogalert.message}
+        </Alert>
+        )}
+
         <DialogActions>
           {dialogType === "add" || dialogType === "edit" ? (
             <Button onClick={handleDialogClose}>Cancel</Button>

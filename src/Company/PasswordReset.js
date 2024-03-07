@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Alert,
   Box,
   Button,
   ButtonGroup,
@@ -13,6 +14,7 @@ import axios from "axios";
 
 function PasswordReset() {
   const params = useParams();
+  const [alert, setAlert] = useState({ open: false, message: "", severity: "success" });
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
@@ -26,8 +28,10 @@ function PasswordReset() {
   };
 
   const handleSubmit = async (event) => {
+
     event.preventDefault();
     if (password === verifyPassword) {
+      
       try {
         let res = await axios.post(
           "http://localhost:5001/company/company_update_password",
@@ -37,21 +41,46 @@ function PasswordReset() {
           }
         );
 
-        if (await res.data.isSuccess === true || res.data.isSuccess === false) {
+        if (await res.data.isSuccess === true ) {
           console.log(res);
+          console.log("Success");
+          setAlert({
+            open:true,
+            message:"Password Changed Successfully",
+            severity:"success"
+          })
+        }
+        if (await res.data.isSuccess === false) {
+          console.log(res);
+          console.log("Error");
+          setAlert({
+            open:true,
+            message:"Oops! Something went wrong.",
+            severity:"error"
+          })
         }
       } catch (err) {
-        console.log("err", err);
-        //    setAlert(true);
+        console.log("Error", err);
+        setAlert({
+          open: true,
+          message: "Oops! Something went wrong.",
+          severity: "error"
+        });
       }
     } else {
       // Passwords do not match, show error message or handle accordingly
-      console.log("Passwords do not match");
+      setAlert({
+        open: true,
+        message: "Password Do not Match",
+        severity: "error"
+      })
+      console.log("Passwords do not Match");
       setPasswordsMatch(false);
     }
   };
 
   return (
+    <>
     <div style={{ background: "#333", minHeight: "100vh" }}>
       <Container component="main" maxWidth="xs">
         <Box
@@ -137,6 +166,16 @@ function PasswordReset() {
         </Box>
       </Container>
     </div>
+    {alert.open && (
+        <Alert
+          onClose={() => setAlert({ ...alert, open: false })}
+          severity={alert.severity}
+          sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 9999 }}
+        >
+          {alert.message}
+        </Alert>
+      )}
+    </>
   );
 }
 
