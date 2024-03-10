@@ -27,15 +27,12 @@ function LoginCompany() {
         "http://localhost:5001/company/company_login",
         obj
       );
-
+        console.log('erroro obj : ',obj);
       if (res.data.isSuccess === true) {
         localStorage.setItem("company_token", res.data.company_token);
         toNavigate(`/Company/Dashboard/${res.data.companyID}`);
       }
-      // if (res.data.isSuccess === false) {
-      //   toNavigate(`/errorpage`);
-      // }
-      else {
+      if (res.data.isSuccess === false) {
         setAlert(true);
       }
     } catch (err) {

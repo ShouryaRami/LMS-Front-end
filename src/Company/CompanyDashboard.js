@@ -227,9 +227,9 @@ const handleAddOrUpdatecandidate = async () => {
 
   //////////////////////
   // Function to render candidate ID in table cells
-// const renderCandidateID = (candidate) => {
-//   return candidate._id ? candidate._id : <div>...Loading</div>
-// };
+const renderCandidateID = (candidate) => {
+  return candidate._id ? candidate._id : <div>...Loading</div>
+};
 
   //Function for Validating Email
   const isValidEmail = (email) => {
@@ -284,9 +284,9 @@ const handleAddOrUpdatecandidate = async () => {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                {/* <TableCell>
+                <TableCell>
                   <b>Candidate ID</b>
-                </TableCell> */}
+                </TableCell>
                 <TableCell>
                   <b>Candidate Name</b>
                 </TableCell>
@@ -304,7 +304,7 @@ const handleAddOrUpdatecandidate = async () => {
             <TableBody>
               {filteredData.map((item) => (
                 <TableRow key={item._id}>
-                  {/* <TableCell>{renderCandidateID(item)}</TableCell> */}
+                  <TableCell>{renderCandidateID(item)}</TableCell>
                   <TableCell>{item.candidate_name}</TableCell>
                   <TableCell>{item.candidate_email}</TableCell>
                   <TableCell>{item.candidate_contact_number}</TableCell>

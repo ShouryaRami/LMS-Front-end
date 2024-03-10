@@ -225,9 +225,9 @@ function Dashboard() {
 
   //////////////
   // Function to render company ID in table cells
-  // const renderCompanyID = (company) => {
-  //   return company._id ? company._id : <div>Loading...</div>;
-  // };
+  const renderCompanyID = (company) => {
+    return company._id ? company._id : <div>Loading...</div>;
+  };
 
   //Function for Validating Email
   const isValidEmail = (email) => {
@@ -282,9 +282,9 @@ function Dashboard() {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                {/* <TableCell>
+                <TableCell>
                   <b>Company ID</b>
-                </TableCell> */}
+                </TableCell>
                 <TableCell>
                   <b>Company Name</b>
                 </TableCell>
@@ -302,7 +302,7 @@ function Dashboard() {
             <TableBody>
               {filteredData.map((item) => (
                 <TableRow key={item._id}>
-                  {/* <TableCell>{item._id}</TableCell> */}
+                  <TableCell>{item._id}</TableCell>
                   <TableCell>{item.company_name}</TableCell>
                   <TableCell>{item.company_email}</TableCell>
                   <TableCell>{item.company_contact_number}</TableCell>
