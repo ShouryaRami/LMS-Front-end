@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "./Navbar";
+import AdminNavbar from "../Component/AdminNavbar";
 import {
   Button,
   Dialog,
@@ -240,7 +240,7 @@ function Dashboard() {
 
   return (
     <>
-      <Navbar />
+      <AdminNavbar />
       <Container
         maxWidth="xl"
         sx={{

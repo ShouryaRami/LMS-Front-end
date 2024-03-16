@@ -8,7 +8,6 @@ import "./App.css";
 import Login from "./Admin/Login";
 import Dashboard from "./Admin/AdminDashboard";
 import DrawerMenu from "./Admin/Drawer";
-import StudentTable from "./Admin/Exampls";
 import Dashboard2 from "./Admin/Dashboard_test";
 import Login2 from "./Admin/LoginOld";
 import CompanyDashboard from "./Company/CompanyDashboard";
@@ -18,6 +17,8 @@ import AdminProfile from "./Admin/AdminProfile";
 import ErrorPage from "./Company/ErrorPage";
 import EnterEmail from "./Company/EnterEmail";
 import PasswordReset from "./Company/PasswordReset";
+import SkillManagement from "./Company/SkillManagement";
+import Testing from "./Company/TestingSkill";
 
 function App() {
   return (
@@ -44,9 +45,16 @@ function App() {
               path="/Company_Registration"
               element={<CompanyRegistration />}
             />
+            <Route
+              path="/Company/SkillManagement"
+              element={<SkillManagement/>}
+            />
             {/* <Route path="/PasswordReset" element={<PasswordReset/>} /> */}
             <Route path="/PasswordReset/:company_email" element={<PasswordReset/>} />
             <Route path="/EnterEmail" element={<EnterEmail/>}/>
+
+            {/*Testing */}
+            <Route path="/Testing" element={<Testing/>}/>
           </Routes>
         </Router>
       </div>

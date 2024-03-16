@@ -18,30 +18,26 @@ import {
   Alert,
   Container,
 } from "@mui/material";
-import Data from "./CompanyData";
-import { data_company_main } from "./CompanyData";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import SkillData from "./SkillData";
 
-function CompanyDashboard() {
+function SkillManagement() {
   //All state for data, dialog open and close, for dilog type (add,edit and info)
-  const [data, setData] = useState(Data);
+  const [data, setData] = useState(SkillData);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogType, setDialogType] = useState("");
   const [formData, setFormData] = useState({
-    _id: "",
-    candidate_name: "",
-    candidate_password: "",
-    candidate_email: "",
-    candidate_profilePic: "",
-    candidate_contact_number: "",
-    candidate_address: "",
+    _id: " ",
+        skill_name: "",
+        skill_description: "",
+        subSkill: ""
   });
   const params = useParams();
 
   //State for delete and alert
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [deletedCandidate, setDeletedCandidate] = useState(null);
+  const [deletedSkill, setDeletedSkill] = useState(null);
   const [alert, setAlert] = useState({ open: false, message: "" });
 
   //State for Email dialog alert
@@ -55,7 +51,7 @@ function CompanyDashboard() {
     const fetchData = async () => {
       try {
         // Simulating fetching real data from an API endpoint
-        const rdata = await data_company_main(params.companyID);
+        const rdata = await SkillData(params.companyID);
         let fdata = rdata.data;
         setData(fdata.response);
       } catch (err) {
@@ -63,23 +59,20 @@ function CompanyDashboard() {
       }
     };
     fetchData();
-  }, [data_company_main]);
+  }, [SkillData]);
 
-  // Function to open dialog for add, edit or view candidate details
-  const handleDialogOpen = (type, candidateData) => {
+  // Function to open dialog for add, edit or view Skill details
+  const handleDialogOpen = (type, skillData) => {
     setDialogType(type);
     if (type === "edit" || type === "info") {
-      setFormData(candidateData);
+      setFormData(skillData);
     } else {
       setFormData({
-        _id: "",
-        candidate_name: "",
-        candidate_password: "",
-        candidate_email: "",
-        candidate_profilePic: "",
-        candidate_contact_number: "",
-        candidate_address: "",
-        companyID: params.companyID, // Set companyID when adding a new candidate
+        _id: " ",
+            skill_name: "",
+            skill_description: "",
+            subSkill: ""
+            // companyID: params.companyID, // Set companyID when adding a new skill
       });
     }
     setDialogOpen(true);
@@ -89,13 +82,10 @@ function CompanyDashboard() {
   const handleDialogClose = () => {
     setDialogOpen(false);
     setFormData({
-      _id: "",
-      candidate_name: "",
-      candidate_password: "",
-      candidate_email: "",
-      candidate_profilePic: "",
-      candidate_contact_number: "",
-      candidate_address: "",
+        _id: " ",
+            skill_name: "",
+            skill_description: "",
+            subSkill: ""
     });
   };
 
@@ -103,52 +93,44 @@ function CompanyDashboard() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Function to add or update candidate details
-const handleAddOrUpdatecandidate = async () => {
-  //To validate Email
-  if (!isValidEmail(formData.candidate_email)) {
-    console.log("Invalid email format");
-    setDialogAlert({
-      open: true,
-      message:"Enter Valid Email"
-    })
-    return;
-  }
+  // Function to add or update skill details
+const handleAddOrUpdateskill = async () => {
+  
   //
   if (dialogType === "add") {
-    const newCandidate = { ...formData, companyID: params.companyID };
+    const newSkill = { ...formData, companyID: params.companyID };
     try {
       let res = await axios.post(
-        "http://localhost:5001/company/addCandidates",
-        newCandidate,
+        "http://localhost:5001/company/addSkills",
+        newSkill,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("company_token")}`,
           },
         }
       );
-      // Update state with the new candidate data
-      setData([...data, newCandidate]); // Assuming the response does not contain the updated data
+      // Update state with the new Skill data
+      setData([...data, newSkill]); // Assuming the response does not contain the updated data
     } catch (err) {
       console.log("err", err);
       // Handle error
     }
   } else {
     // Edit Logic
-    const updatedCandidate = { ...formData };
+    const updatedSkill = { ...formData };
     try {
       let res = await axios.post(
-        "http://localhost:5001/company/updateCandidates",
-        updatedCandidate,
+        "http://localhost:5001/company/updateSkills",
+        updatedSkill,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("company_token")}`,
           },
         }
       );
-      // Update state with the updated candidate data
+      // Update state with the updated Skill data
       const updatedData = data.map((item) =>
-        item._id === updatedCandidate._id ? updatedCandidate : item
+        item._id === updatedSkill._id ? updatedSkill : item
       );
       setData(updatedData);
     } catch (err) {
@@ -161,20 +143,20 @@ const handleAddOrUpdatecandidate = async () => {
 };
 
 
-  // Function to confirm deletion of a candidate
-  const handleConfirmDelete = (candidate) => {
-    setDeletedCandidate(candidate);
+  // Function to confirm deletion of a skill
+  const handleConfirmDelete = (skill) => {
+    setDeletedSkill(skill);
     setDeleteDialogOpen(true);
   };
 
-  // Function to delete a candidate
-  const handleDeletecandidate = async (candi_data) => {
+  // Function to delete a skill
+  const handleDeleteskill = async (candi_data) => {
     try {
       let res = await axios.post(
-        `http://localhost:5001/company/updateCandidates`,
+        `http://localhost:5001/company/updateSkills`,
         {
           _id: candi_data,
-          candidate_isDeleted: true,
+          skill_isDeleted: true,
         },
         {
           headers: {
@@ -189,46 +171,23 @@ const handleAddOrUpdatecandidate = async () => {
 
     // Front end deletion
 
-    const updatedcandidates = data.filter(
-      (candidate) => candidate._id !== deletedCandidate._id
+    const updatedskills = data.filter(
+      (skill) => skill._id !== deletedSkill._id
     );
-    setData(updatedcandidates);
+    setData(updatedskills);
     setDeleteDialogOpen(false);
     setAlert({
       open: true,
-      message: `candidate "${
-        deletedCandidate && deletedCandidate.candidate_name
+      message: `skill "${
+        deletedSkill && deletedSkill.skill_name
       }" successfully deleted!`,
     });
-    setDeletedCandidate(null);
+    setDeletedSkill(null);
   };
 
-  //For Search Bar
-  const [searchItem, setSearchItem] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
-
-  const handleSearchChange = (event) => {
-    setSearchItem(event.target.value); // Update searchItem state as the user types
-  };
-
-  useEffect(() => {
-    if (!searchItem) {
-      setFilteredData(data); // If searchItem is empty, set filteredData to all data
-      return;
-    }
-    const filtered = data.filter(
-      (item) =>
-        item.candidate_name.toLowerCase().includes(searchItem.toLowerCase()) ||
-        item.candidate_email.toLowerCase().includes(searchItem.toLowerCase()) // Filter data based on company name or email
-    );
-    setFilteredData(filtered);
-  }, [searchItem, data]);
-
-
-  //////////////////////
-  // Function to render candidate ID in table cells
-const renderCandidateID = (candidate) => {
-  return candidate._id ? candidate._id : <div>...Loading</div>
+  // Function to render Skill ID in table cells
+const renderSkillID = (skill) => {
+  return skill._id ? skill._id : <div>...Loading</div>
 };
 
   //Function for Validating Email
@@ -261,15 +220,7 @@ const renderCandidateID = (candidate) => {
             marginBottom: 3,
           }}
         >
-          <TextField
-            label="Search"
-            variant="outlined"
-            value={searchItem}
-            onChange={handleSearchChange}
-            sx={{ flex: 1, marginBottom: 2.3, marginRight: 2 }}
-            style={{ height: 60 }}
-          />
-          {/* Add Company button */}
+          {/* Add Skill button */}
           <Button
             variant="outlined"
             color="primary"
@@ -277,7 +228,7 @@ const renderCandidateID = (candidate) => {
             style={{ height: 55 }}
             onClick={() => handleDialogOpen("add")}
           >
-            Add Candidate
+            Add Skill
           </Button>
         </div>
         <TableContainer component={Paper}>
@@ -285,16 +236,13 @@ const renderCandidateID = (candidate) => {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <b>Candidate ID</b>
+                  <b>Skill ID</b>
                 </TableCell>
                 <TableCell>
-                  <b>Candidate Name</b>
+                  <b>Skill Name</b>
                 </TableCell>
                 <TableCell>
-                  <b>Email</b>
-                </TableCell>
-                <TableCell>
-                  <b>Contact Number</b>
+                  <b>Sub Skill</b>
                 </TableCell>
                 <TableCell>
                   <b>Action</b>
@@ -302,12 +250,11 @@ const renderCandidateID = (candidate) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData.map((item) => (
+              {data.map((item) => (
                 <TableRow key={item._id}>
-                  <TableCell>{renderCandidateID(item)}</TableCell>
-                  <TableCell>{item.candidate_name}</TableCell>
-                  <TableCell>{item.candidate_email}</TableCell>
-                  <TableCell>{item.candidate_contact_number}</TableCell>
+                  <TableCell>{renderSkillID(item)}</TableCell>
+                  <TableCell>{item.skill_name}</TableCell>
+                  <TableCell>{item.subSkill}</TableCell>
                   <TableCell>
                     <Button
                       color="success"
@@ -341,11 +288,11 @@ const renderCandidateID = (candidate) => {
       <Dialog open={dialogOpen} onClose={handleDialogClose}>
         <DialogTitle>
           {dialogType === "add"
-            ? "Add Company"
+            ? "Add Skill"
             : dialogType === "edit"
-            ? "Edit Company"
+            ? "Edit Skill"
             : dialogType === "info"
-            ? "Company Information"
+            ? "Skill Information"
             : ""}
         </DialogTitle>
         <DialogContent>
@@ -368,13 +315,13 @@ const renderCandidateID = (candidate) => {
               autoFocus
               required
               margin="dense"
-              id="candidate_name"
-              name="candidate_name"
-              label="Candidate Name"
+              id="skill_name"
+              name="skill_name"
+              label="Skill Name"
               type="text"
               fullWidth
               variant="standard"
-              value={formData.candidate_name}
+              value={formData.skill_name}
               onChange={handleChange}
               InputProps={dialogType === "info" ? { readOnly: true } : {}}
             />
@@ -382,33 +329,13 @@ const renderCandidateID = (candidate) => {
               autoFocus
               required
               margin="dense"
-              id="candidate_email"
-              name="candidate_email"
-              label="Email"
-              type="email"
-              fullWidth
-              variant="standard"
-              value={formData.candidate_email}
-              onChange={handleChange}
-              error={!isValidEmail(formData.candidate_email)} // Check if the email is valid
-              helperText={
-                formData.candidate_email && !isValidEmail(formData.candidate_email)
-                ?"Invalid Email Format"
-                : ""
-              }// Display error message if email is invalid
-              InputProps={dialogType === "info" ? { readOnly: true } : {}}
-            />
-            <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="candidate_password"
-              name="candidate_password"
-              label="Password"
+              id="skill_description"
+              name="skill_description"
+              label="Description"
               type="text"
               fullWidth
               variant="standard"
-              value={formData.candidate_password}
+              value={formData.skill_description}
               onChange={handleChange}
               InputProps={dialogType === "info" ? { readOnly: true } : {}}
             />
@@ -416,41 +343,13 @@ const renderCandidateID = (candidate) => {
               autoFocus
               required
               margin="dense"
-              id="candidate_profilePic"
-              name="candidate_profilePic"
-              label="Logo"
+              id="subSkill"
+              name="subSkill"
+              label="SubSkill"
               type="text"
               fullWidth
               variant="standard"
-              value={formData.candidate_profilePic}
-              onChange={handleChange}
-              InputProps={dialogType === "info" ? { readOnly: true } : {}}
-            />
-            <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="candidate_contact_number"
-              name="candidate_contact_number"
-              label="Contact Number"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={formData.candidate_contact_number}
-              onChange={handleChange}
-              InputProps={dialogType === "info" ? { readOnly: true } : {}}
-            />
-            <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="candidate_address"
-              name="candidate_address"
-              label="Address"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={formData.candidate_address}
+              value={formData.subSkill}
               onChange={handleChange}
               InputProps={dialogType === "info" ? { readOnly: true } : {}}
             />
@@ -474,7 +373,7 @@ const renderCandidateID = (candidate) => {
           ) : null}
           <Button
             type="submit"
-            onClick={handleAddOrUpdatecandidate}
+            onClick={handleAddOrUpdateskill}
             color="primary"
           >
             {dialogType === "add"
@@ -496,14 +395,14 @@ const renderCandidateID = (candidate) => {
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete Candidate "
-            {deletedCandidate && deletedCandidate.candidate_name}"?
+            Are you sure you want to delete Skill "
+            {deletedSkill && deletedSkill.skill_name}"?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>Disagree</Button>
           <Button
-            onClick={() => handleDeletecandidate(deletedCandidate._id)}
+            onClick={() => handleDeleteskill(deletedSkill._id)}
             color="primary"
           >
             Agree
@@ -524,4 +423,4 @@ const renderCandidateID = (candidate) => {
   );
 }
 
-export default CompanyDashboard;
+export default SkillManagement;

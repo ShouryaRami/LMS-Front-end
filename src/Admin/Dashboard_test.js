@@ -2,7 +2,7 @@ import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText,
 import React, { Fragment, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import Data from './Data';
-import Navbar from './Navbar';
+import Navbar from '../Component/AdminNavbar';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;

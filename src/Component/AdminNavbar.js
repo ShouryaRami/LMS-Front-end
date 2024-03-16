@@ -20,7 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { Avatar, FormControlLabel, FormGroup, Switch } from '@mui/material';
 
 
-export default function Navbar() {
+export default function AdminNavbar() {
     const openInNewTab = (url) => {
         window.open(url, '_blank', 'noopener,noreferrer');
     };
@@ -103,7 +103,7 @@ export default function Navbar() {
                                 onClose={handleClose}
                             >
                                 <MenuItem onClick={() => { toNavigate('/Admin/Profile') }}>Profile</MenuItem>
-                                <MenuItem onClick={() => { toNavigate('/Login') }}>Logout</MenuItem>
+                                <MenuItem onClick={() => { toNavigate('/Admin/Login') }}>Logout</MenuItem>
                             </Menu>
                         </div>
                     )}
@@ -129,12 +129,6 @@ export default function Navbar() {
                             </ListItemIcon>
                             <ListItemText primary="Admin Dashboard" />
                         </ListItem>
-                        <ListItem onClick={() => { toNavigate('/Company/Dashboard') }} >
-                            <ListItemIcon >
-                                <DashboardIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Company Dashboard" />
-                        </ListItem>
                         <ListItem onClick={() => { toNavigate('/Admin/Home') }}>
                             <ListItemIcon>
                                 <HomeIcon />
@@ -145,7 +139,7 @@ export default function Navbar() {
                             <ListItemIcon>
                                 <LoginIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Login" />
+                            <ListItemText primary="Logout" />
                         </ListItem>
                     </List>
                 </Box>

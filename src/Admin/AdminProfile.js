@@ -1,6 +1,6 @@
 import React from 'react';
 import { Avatar, Button, Container, Grid, Typography } from '@mui/material';
-import Navbar from './Navbar';
+import Navbar from '../Component/AdminNavbar';
 import { useNavigate } from 'react-router-dom';
 
 
