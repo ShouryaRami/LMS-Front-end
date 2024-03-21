@@ -19,6 +19,8 @@ import EnterEmail from "./Company/EnterEmail";
 import PasswordReset from "./Company/PasswordReset";
 import SkillManagement from "./Company/SkillManagement";
 import Testing from "./Company/TestingSkill";
+import Trial from "./Admin/EnhancedTable";
+
 
 function App() {
   return (
@@ -54,6 +56,7 @@ function App() {
             <Route path="/EnterEmail" element={<EnterEmail/>}/>
 
             {/*Testing */}
+            <Route path="/Trial" element={<Trial/>}></Route>
             <Route path="/Testing" element={<Testing/>}/>
           </Routes>
         </Router>

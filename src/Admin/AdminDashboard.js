@@ -244,11 +244,12 @@ function Dashboard() {
       <Container
         maxWidth="xl"
         sx={{
+          backgroundColor: "secondary" ,
           minHeight: "calc(100vh - 64px - 128px)",
           display: "flex",
           flexDirection: "column",
-          paddingTop: 3,
-          paddingBottom: 4,
+          mt: 3,
+          mb: 4,
         }}
       >
         <div
@@ -264,7 +265,7 @@ function Dashboard() {
             variant="outlined"
             value={searchItem}
             onChange={handleSearchChange}
-            sx={{ flex: 1, marginBottom: 2.3, marginRight: 2 }}
+            sx={{ flex: 1, mb: 2.3, mr: 2 }}
             style={{ height: 60 }}
           />
           {/* Add Company button */}
@@ -278,7 +279,14 @@ function Dashboard() {
             Add Company
           </Button>
         </div>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper}
+        sx={{
+          border:1,
+          gap:2,
+          borderColor:"primary.main",
+          backgroundColor: "#90caf9"
+      }}
+      >
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
