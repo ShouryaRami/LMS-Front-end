@@ -34,7 +34,7 @@ function App() {
             <Route path="/Admin/Profile" element={<AdminProfile />} />
             {/* <Route path='/Admin/Login2' element={<Login2/>}/> */}
             {/* <Route path='/' element={<StudentTable/>}/> */}
-            {/* <Route path='/Admin/Dashboard2' element={<Dashboard2/>}/> */}
+            <Route path='/Admin/Dashboard2' element={<Dashboard2/>}/>
 
             {/*Company Pages*/}
             <Route path="/Login" element={<LoginCompany />} />
@@ -56,7 +56,7 @@ function App() {
             <Route path="/EnterEmail" element={<EnterEmail/>}/>
 
             {/*Testing */}
-            <Route path="/Trial" element={<Trial/>}></Route>
+            <Route path="/Trial" element={<Trial/>}/>
             <Route path="/Testing" element={<Testing/>}/>
           </Routes>
         </Router>

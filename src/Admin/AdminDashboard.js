@@ -218,7 +218,9 @@ function Dashboard() {
     const filtered = data.filter(
       (item) =>
         item.company_name.toLowerCase().includes(searchItem.toLowerCase()) ||
-        item.company_email.toLowerCase().includes(searchItem.toLowerCase()) // Filter data based on company name or email
+        item.company_email.toLowerCase().includes(searchItem.toLowerCase()) ||
+        item.company_contact_number.toLowerCase().includes(searchItem.toLowerCase()) 
+        // Filter data based on company name or email
     );
     setFilteredData(filtered);
   }, [searchItem, data]);
