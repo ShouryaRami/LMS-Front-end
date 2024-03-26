@@ -6,23 +6,60 @@ import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import { Button, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
-export default function FileSystemNavigator() {
+export default function Testing() {
     const [skill, setSkill] = React.useState({});
     const [val, setVal] = React.useState("");
+    const [subText, setSubText] = React.useState("");
+    const [texts, setTexts] = React.useState([]);
+
     const handleClick = () => {
         let obj = skill;
-        obj[val] = {};
+        obj[val] = { sub: [] };
         setSkill(obj);
         setVal("");
     };
 
-    const [subval, setSubVal] = React.useState("");
-    const handleSubClick = (val) => {
-        let obj = skill;
-        obj[val][subval]={}
-        setSkill(obj)
-        setSubVal('')
+    const handleAddSubText = (parent) => {
+        const updatedSkill = { ...skill };
+        if (!updatedSkill[parent].sub) {
+            updatedSkill[parent].sub = [];
+        }
+        updatedSkill[parent].sub.push(subText);
+        setSkill(updatedSkill);
+        setSubText("");
     };
+
+    const handleUpdateParentText = (oldParent, newParent) => {
+        const updatedSkill = { ...skill };
+        updatedSkill[newParent] = updatedSkill[oldParent];
+        delete updatedSkill[oldParent];
+        setSkill(updatedSkill);
+    };
+
+    const handleUpdateSubText = (parent, oldSub, newSub) => {
+        const updatedSkill = { ...skill };
+        const index = updatedSkill[parent].sub.indexOf(oldSub);
+        if (index !== -1) {
+            updatedSkill[parent].sub[index] = newSub;
+            setSkill(updatedSkill);
+        }
+    };
+
+    const handleDeleteParentText = (parent) => {
+        const updatedSkill = { ...skill };
+        delete updatedSkill[parent];
+        setSkill(updatedSkill);
+    };
+
+    const handleDeleteSubText = (parent, sub) => {
+        const updatedSkill = { ...skill };
+        const index = updatedSkill[parent].sub.indexOf(sub);
+        if (index !== -1) {
+            updatedSkill[parent].sub.splice(index, 1);
+            setSkill(updatedSkill);
+        }
+    };
+
     return (
         <div>
             <TextField
@@ -31,7 +68,7 @@ export default function FileSystemNavigator() {
                 onChange={(e) => {
                     setVal(e.target.value);
                 }}
-            ></TextField>
+            />
             <Button onClick={handleClick}>
                 <AddIcon />
             </Button>
@@ -40,37 +77,49 @@ export default function FileSystemNavigator() {
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
             >
-                {Object.keys(skill).map((val, idx) => {
+                {Object.keys(skill).map((parent, idx) => {
                     return (
-                        <div>
-                            {console.log("Skill -",skill)}
-                            <TreeItem
-                                aria-label="file system navigator"
-                                nodeId={idx}
-                                label={val}
-                            >
+                        <TreeItem
+                            key={parent}
+                            nodeId={`parent-${idx}`}
+                            label={parent}
+                        >
+                            <div>
                                 <TextField
                                     label={"Sub Tasks"}
-                                    value={subval}
-                                    onChange={(x) => {
-                                        setSubVal(x.target.value);
+                                    value={subText}
+                                    onChange={(e) => {
+                                        setSubText(e.target.value);
                                     }}
-                                ></TextField>
-                                <Button onClick={()=>handleSubClick(val)}>
+                                />
+                                <Button onClick={() => handleAddSubText(parent)}>
                                     <AddIcon />
                                 </Button>
-                                
-                                {Object.keys(skill[val]).length>=0 && Object.keys(skill[val]).map((subval, subidx) => {
-                                    return (
-                                        <div>
-                                            <TreeItem label={val[subval]} nodeId={subidx} />
-                                            {console.log("skill - ",skill)}
-                                        </div>
-                                    );
-                                })}
-                                {/* <TreeItem label="subval"/> */}
-                            </TreeItem>
-                        </div>
+                            </div>
+                            <Button onClick={() => handleDeleteParentText(parent)}>Delete Parent</Button>
+                            <Button onClick={() => {
+                                const newParent = prompt("Enter new parent text:");
+                                if (newParent !== null && newParent !== "") {
+                                    handleUpdateParentText(parent, newParent);
+                                }
+                            }}>Update Parent</Button>
+                            {skill[parent].sub &&
+                                skill[parent].sub.map((sub, subIdx) => (
+                                    <TreeItem
+                                        key={`${parent}-sub-${subIdx}`}
+                                        nodeId={`${parent}-sub-${subIdx}`}
+                                        label={sub}
+                                    >
+                                        <Button onClick={() => handleDeleteSubText(parent, sub)}>Delete Sub</Button>
+                                        <Button onClick={() => {
+                                            const newSub = prompt("Enter new subtext:");
+                                            if (newSub !== null && newSub !== "") {
+                                                handleUpdateSubText(parent, sub, newSub);
+                                            }
+                                        }}>Update Sub</Button>
+                                    </TreeItem>
+                                ))}
+                        </TreeItem>
                     );
                 })}
             </TreeView>

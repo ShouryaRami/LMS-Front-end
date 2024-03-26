@@ -22,6 +22,12 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import SkillData from "./SkillData";
 
+import AddIcon from "@mui/icons-material/Add";
+import { TreeItem, TreeView } from "@mui/x-tree-view";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+
+
 function SkillManagement() {
   //All state for data, dialog open and close, for dilog type (add,edit and info)
   const [data, setData] = useState(SkillData);
@@ -199,6 +205,62 @@ const renderSkillID = (skill) => {
   //For re-rendering
   useEffect(() => {}, [refresh, data]);
 
+
+  //All logic for skills
+
+  const [skill, setSkill] = React.useState({});
+  const [val, setVal] = React.useState("");
+  const [subText, setSubText] = React.useState("");
+  const [texts, setTexts] = React.useState([]);
+
+  const handleClick = () => {
+      let obj = skill;
+      obj[val] = { sub: [] };
+      setSkill(obj);
+      setVal("");
+  };
+
+  const handleAddSubText = (parent) => {
+      const updatedSkill = { ...skill };
+      if (!updatedSkill[parent].sub) {
+          updatedSkill[parent].sub = [];
+      }
+      updatedSkill[parent].sub.push(subText);
+      setSkill(updatedSkill);
+      setSubText("");
+  };
+
+  const handleUpdateParentText = (oldParent, newParent) => {
+      const updatedSkill = { ...skill };
+      updatedSkill[newParent] = updatedSkill[oldParent];
+      delete updatedSkill[oldParent];
+      setSkill(updatedSkill);
+  };
+
+  const handleUpdateSubText = (parent, oldSub, newSub) => {
+      const updatedSkill = { ...skill };
+      const index = updatedSkill[parent].sub.indexOf(oldSub);
+      if (index !== -1) {
+          updatedSkill[parent].sub[index] = newSub;
+          setSkill(updatedSkill);
+      }
+  };
+
+  const handleDeleteParentText = (parent) => {
+      const updatedSkill = { ...skill };
+      delete updatedSkill[parent];
+      setSkill(updatedSkill);
+  };
+
+  const handleDeleteSubText = (parent, sub) => {
+      const updatedSkill = { ...skill };
+      const index = updatedSkill[parent].sub.indexOf(sub);
+      if (index !== -1) {
+          updatedSkill[parent].sub.splice(index, 1);
+          setSkill(updatedSkill);
+      }
+  };
+
   return (
     <>
       <CompanyNavbar />
@@ -297,62 +359,69 @@ const renderSkillID = (skill) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
+          <div>
             <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="_id"
-              name="_id"
-              label="id"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={formData._id}
-              //   onChange={handleChange}
-              InputProps={{ readOnly: true }}
+                label={"Tasks"}
+                value={val}
+                onChange={(e) => {
+                    setVal(e.target.value);
+                }}
             />
-            <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="skill_name"
-              name="skill_name"
-              label="Skill Name"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={formData.skill_name}
-              onChange={handleChange}
-              InputProps={dialogType === "info" ? { readOnly: true } : {}}
-            />
-            <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="skill_description"
-              name="skill_description"
-              label="Description"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={formData.skill_description}
-              onChange={handleChange}
-              InputProps={dialogType === "info" ? { readOnly: true } : {}}
-            />
-            <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="subSkill"
-              name="subSkill"
-              label="SubSkill"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={formData.subSkill}
-              onChange={handleChange}
-              InputProps={dialogType === "info" ? { readOnly: true } : {}}
-            />
+            <Button onClick={handleClick}>
+                <AddIcon />
+            </Button>
+            <TreeView
+                aria-label="file system navigator"
+                defaultCollapseIcon={<ExpandMoreIcon />}
+                defaultExpandIcon={<ChevronRightIcon />}
+            >
+                {Object.keys(skill).map((parent, idx) => {
+                    return (
+                        <TreeItem
+                            key={parent}
+                            nodeId={`parent-${idx}`}
+                            label={parent}
+                        >
+                            <div>
+                                <TextField
+                                    label={"Sub Tasks"}
+                                    value={subText}
+                                    onChange={(e) => {
+                                        setSubText(e.target.value);
+                                    }}
+                                />
+                                <Button onClick={() => handleAddSubText(parent)}>
+                                    <AddIcon />
+                                </Button>
+                            </div>
+                            <Button onClick={() => handleDeleteParentText(parent)}>Delete Parent</Button>
+                            <Button onClick={() => {
+                                const newParent = prompt("Enter new parent text:");
+                                if (newParent !== null && newParent !== "") {
+                                    handleUpdateParentText(parent, newParent);
+                                }
+                            }}>Update Parent</Button>
+                            {skill[parent].sub &&
+                                skill[parent].sub.map((sub, subIdx) => (
+                                    <TreeItem
+                                        key={`${parent}-sub-${subIdx}`}
+                                        nodeId={`${parent}-sub-${subIdx}`}
+                                        label={sub}
+                                    >
+                                        <Button onClick={() => handleDeleteSubText(parent, sub)}>Delete Sub</Button>
+                                        <Button onClick={() => {
+                                            const newSub = prompt("Enter new subtext:");
+                                            if (newSub !== null && newSub !== "") {
+                                                handleUpdateSubText(parent, sub, newSub);
+                                            }
+                                        }}>Update Sub</Button>
+                                    </TreeItem>
+                                ))}
+                        </TreeItem>
+                    );
+                })}
+            </TreeView>
+        </div>
           </DialogContentText>
         </DialogContent>
 
