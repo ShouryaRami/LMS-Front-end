@@ -34,7 +34,8 @@ function SkillManagement() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogType, setDialogType] = useState("");
   const [formData, setFormData] = useState({
-    _id: " ",
+        _id: " ",
+        
         skill_name: "",
         skill_description: "",
         subSkill: ""

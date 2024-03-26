@@ -17,6 +17,7 @@ export default function Testing() {
         obj[val] = { sub: [] };
         setSkill(obj);
         setVal("");
+        console.log('The Skill is',skill );
     };
 
     const handleAddSubText = (parent) => {
@@ -27,6 +28,7 @@ export default function Testing() {
         updatedSkill[parent].sub.push(subText);
         setSkill(updatedSkill);
         setSubText("");
+        console.log('SubSkill is added',skill );
     };
 
     const handleUpdateParentText = (oldParent, newParent) => {
@@ -34,6 +36,7 @@ export default function Testing() {
         updatedSkill[newParent] = updatedSkill[oldParent];
         delete updatedSkill[oldParent];
         setSkill(updatedSkill);
+        console.log("The Parent Skill is edited",skill)
     };
 
     const handleUpdateSubText = (parent, oldSub, newSub) => {
@@ -43,12 +46,15 @@ export default function Testing() {
             updatedSkill[parent].sub[index] = newSub;
             setSkill(updatedSkill);
         }
+        console.log("The Sub Skill is edited",skill)
+
     };
 
     const handleDeleteParentText = (parent) => {
         const updatedSkill = { ...skill };
         delete updatedSkill[parent];
         setSkill(updatedSkill);
+        console.log("The Parent Skill is deleted",skill)
     };
 
     const handleDeleteSubText = (parent, sub) => {
@@ -58,6 +64,7 @@ export default function Testing() {
             updatedSkill[parent].sub.splice(index, 1);
             setSkill(updatedSkill);
         }
+        console.log("The Sub Skill is deleted",skill)
     };
 
     return (
