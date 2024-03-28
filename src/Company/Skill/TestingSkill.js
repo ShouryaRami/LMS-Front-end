@@ -7,76 +7,71 @@ import { Button, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 export default function Testing() {
-    const [skill, setSkill] = React.useState({});
+    const [skills, setSkills] = React.useState([]);
     const [val, setVal] = React.useState("");
     const [subText, setSubText] = React.useState("");
-    const [texts, setTexts] = React.useState([]);
+    const [lastId, setLastId] = React.useState(0);
 
-    const handleClick = () => {
-        let obj = skill;
-        obj[val] = { sub: [] };
-        setSkill(obj);
+    const handleAddSkill = () => {
+        const newId = lastId + 1;
+        const newSkill = {
+            _id: newId.toString(),
+            skill_name: val,
+            skill_description: "",
+            subSkill: []
+        };
+        setSkills([...skills, newSkill]);
         setVal("");
-        console.log('The Skill is',skill );
+        setLastId(newId);
+        console.log("Skills after adding skill:", skills);
     };
 
-    const handleAddSubText = (parent) => {
-        const updatedSkill = { ...skill };
-        if (!updatedSkill[parent].sub) {
-            updatedSkill[parent].sub = [];
-        }
-        updatedSkill[parent].sub.push(subText);
-        setSkill(updatedSkill);
+    const handleAddSubSkill = (index) => {
+        const updatedSkills = [...skills];
+        updatedSkills[index].subSkill.push(subText);
+        setSkills(updatedSkills);
         setSubText("");
-        console.log('SubSkill is added',skill );
+        console.log("Skills after adding subskill:", skills);
     };
 
-    const handleUpdateParentText = (oldParent, newParent) => {
-        const updatedSkill = { ...skill };
-        updatedSkill[newParent] = updatedSkill[oldParent];
-        delete updatedSkill[oldParent];
-        setSkill(updatedSkill);
-        console.log("The Parent Skill is edited",skill)
+    const handleDeleteSkill = (index) => {
+        const updatedSkills = [...skills];
+        updatedSkills.splice(index, 1);
+        setSkills(updatedSkills);
+        console.log("Skills after deleting skill:", skills);
     };
 
-    const handleUpdateSubText = (parent, oldSub, newSub) => {
-        const updatedSkill = { ...skill };
-        const index = updatedSkill[parent].sub.indexOf(oldSub);
-        if (index !== -1) {
-            updatedSkill[parent].sub[index] = newSub;
-            setSkill(updatedSkill);
-        }
-        console.log("The Sub Skill is edited",skill)
-
+    const handleDeleteSubSkill = (parentIndex, subIndex) => {
+        const updatedSkills = [...skills];
+        updatedSkills[parentIndex].subSkill.splice(subIndex, 1);
+        setSkills(updatedSkills);
+        console.log("Skills after deleting subskill:", skills);
     };
 
-    const handleDeleteParentText = (parent) => {
-        const updatedSkill = { ...skill };
-        delete updatedSkill[parent];
-        setSkill(updatedSkill);
-        console.log("The Parent Skill is deleted",skill)
+    const handleUpdateSkillName = (index, newName) => {
+        const updatedSkills = [...skills];
+        updatedSkills[index].skill_name = newName;
+        setSkills(updatedSkills);
+        console.log("Skills after updating skill name:", skills);
     };
 
-    const handleDeleteSubText = (parent, sub) => {
-        const updatedSkill = { ...skill };
-        const index = updatedSkill[parent].sub.indexOf(sub);
-        if (index !== -1) {
-            updatedSkill[parent].sub.splice(index, 1);
-            setSkill(updatedSkill);
-        }
-        console.log("The Sub Skill is deleted",skill)
+    const handleUpdateSubSkillName = (parentIndex, subIndex, newName) => {
+        const updatedSkills = [...skills];
+        updatedSkills[parentIndex].subSkill[subIndex] = newName;
+        setSkills(updatedSkills);
+        console.log("Skills after updating subskill name:", skills);
     };
 
     return (
         <div>
             <TextField
-                label={"Tasks"}
+                label={"Skill Name"}
                 value={val}
                 onChange={(e) => {
                     setVal(e.target.value);
                 }}
             />
-            <Button onClick={handleClick}>
+            <Button onClick={handleAddSkill}>
                 <AddIcon />
             </Button>
             <TreeView
@@ -84,51 +79,50 @@ export default function Testing() {
                 defaultCollapseIcon={<ExpandMoreIcon />}
                 defaultExpandIcon={<ChevronRightIcon />}
             >
-                {Object.keys(skill).map((parent, idx) => {
-                    return (
-                        <TreeItem
-                            key={parent}
-                            nodeId={`parent-${idx}`}
-                            label={parent}
-                        >
-                            <div>
-                                <TextField
-                                    label={"Sub Tasks"}
-                                    value={subText}
-                                    onChange={(e) => {
-                                        setSubText(e.target.value);
-                                    }}
-                                />
-                                <Button onClick={() => handleAddSubText(parent)}>
-                                    <AddIcon />
+                {skills.map((skill, index) => (
+                    <TreeItem
+                        key={skill._id}
+                        nodeId={`skill-${skill._id}`}
+                        label={skill.skill_name}
+                    >
+                        <div>
+                            <TextField
+                                label={"Sub Skill"}
+                                value={subText}
+                                onChange={(e) => {
+                                    setSubText(e.target.value);
+                                }}
+                            />
+                            <Button onClick={() => handleAddSubSkill(index)}>
+                                <AddIcon />
+                            </Button>
+                        </div>
+                        <Button onClick={() => handleDeleteSkill(index)}>Delete Skill</Button>
+                        <Button onClick={() => {
+                            const newName = prompt("Enter new skill name:");
+                            if (newName !== null && newName !== "") {
+                                handleUpdateSkillName(index, newName);
+                            }
+                        }}>Update Skill Name</Button>
+                        {skill.subSkill.map((sub, subIndex) => (
+                            <TreeItem
+                                key={`sub-${subIndex}`}
+                                nodeId={`sub-${subIndex}`}
+                                label={sub}
+                            >
+                                <Button onClick={() => handleDeleteSubSkill(index, subIndex)}>
+                                    Delete Sub Skill
                                 </Button>
-                            </div>
-                            <Button onClick={() => handleDeleteParentText(parent)}>Delete Parent</Button>
-                            <Button onClick={() => {
-                                const newParent = prompt("Enter new parent text:");
-                                if (newParent !== null && newParent !== "") {
-                                    handleUpdateParentText(parent, newParent);
-                                }
-                            }}>Update Parent</Button>
-                            {skill[parent].sub &&
-                                skill[parent].sub.map((sub, subIdx) => (
-                                    <TreeItem
-                                        key={`${parent}-sub-${subIdx}`}
-                                        nodeId={`${parent}-sub-${subIdx}`}
-                                        label={sub}
-                                    >
-                                        <Button onClick={() => handleDeleteSubText(parent, sub)}>Delete Sub</Button>
-                                        <Button onClick={() => {
-                                            const newSub = prompt("Enter new subtext:");
-                                            if (newSub !== null && newSub !== "") {
-                                                handleUpdateSubText(parent, sub, newSub);
-                                            }
-                                        }}>Update Sub</Button>
-                                    </TreeItem>
-                                ))}
-                        </TreeItem>
-                    );
-                })}
+                                <Button onClick={() => {
+                                    const newName = prompt("Enter new sub skill name:");
+                                    if (newName !== null && newName !== "") {
+                                        handleUpdateSubSkillName(index, subIndex, newName);
+                                    }
+                                }}>Update Sub Skill Name</Button>
+                            </TreeItem>
+                        ))}
+                    </TreeItem>
+                ))}
             </TreeView>
         </div>
     );

@@ -1,64 +1,64 @@
 import axios from "axios";
 const SkillData = [
     {
-        _id: "1",
-        skill_name: "Web Development",
+        _id: 1,
+        course_name: "Web Development",
         skill_description: "Front-end and back-end development using HTML, CSS, JavaScript, and Python",
-        subSkill: "React, Django"
+        skill: "React, Django"
     },
     {
-        _id: "2",
-        skill_name: "Data Science",
+        _id: 2,
+        course_name: "Data Science",
         skill_description: "Analyzing and visualizing data using pandas, numpy, and matplotlib",
-        subSkill: "Machine Learning, Data Cleaning"
+        skill: "Machine Learning, Data Cleaning"
     },
     {
-        _id: "3",
-        skill_name: "Graphic Design",
+        _id: 3,
+        course_name: "Graphic Design",
         skill_description: "Creating visually appealing designs for websites and marketing materials",
-        subSkill: "Adobe Photoshop, Illustrator"
+        skill: "Adobe Photoshop, Illustrator"
     },
     {
-        _id: "4",
-        skill_name: "Mobile App Development",
+        _id: 4,
+        course_name: "Mobile App Development",
         skill_description: "Building cross-platform mobile apps using React Native",
-        subSkill: "Redux, Expo"
+        skill: "Redux, Expo"
     },
     {
-        _id: "5",
-        skill_name: "Database Management",
+        _id: 5,
+        course_name: "Database Management",
         skill_description: "Designing and optimizing databases using SQL and MongoDB",
-        subSkill: "Database Normalization, Indexing"
+        skill: "Database Normalization, Indexing"
     },
     {
-        _id: "6",
-        skill_name: "Cloud Computing",
+        _id: 6,
+        course_name: "Cloud Computing",
         skill_description: "Deploying applications on AWS and managing cloud resources",
-        subSkill: "EC2, S3, Lambda"
+        skill: "EC2, S3, Lambda"
     },
     {
-        _id: "7",
-        skill_name: "UI/UX Design",
+        _id: 7,
+        course_name: "UI/UX Design",
         skill_description: "Creating user-friendly interfaces and wireframes",
-        subSkill: "User Research, Prototyping"
+        skill: "User Research, Prototyping"
     },
     {
-        _id: "8",
-        skill_name: "DevOps",
+        _id: 8,
+        course_name: "DevOps",
         skill_description: "Automating deployment pipelines and managing infrastructure",
-        subSkill: "Jenkins, Docker"
+        skill: "Jenkins, Docker"
     },
     {
-        _id: "9",
-        skill_name: "Cybersecurity",
+        _id: 9,
+        course_name: "Cybersecurity",
         skill_description: "Securing applications and networks against threats",
-        subSkill: "Firewalls, Encryption"
+        skill: "Firewalls, Encryption"
     },
     {
-        _id: "10",
-        skill_name: "Project Management",
+        _id: 10,
+        course_name: "Project Management",
         skill_description: "Planning, executing, and monitoring software projects",
-        subSkill: "Agile, Scrum"
+        skill: "Agile, Scrum"
     }
 ]
 ;

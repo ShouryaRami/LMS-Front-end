@@ -36,9 +36,9 @@ function SkillManagement() {
   const [formData, setFormData] = useState({
         _id: " ",
         
-        skill_name: "",
+        course_name: "",
         skill_description: "",
-        subSkill: ""
+        skill: ""
   });
   const params = useParams();
 
@@ -76,9 +76,9 @@ function SkillManagement() {
     } else {
       setFormData({
         _id: " ",
-            skill_name: "",
+            course_name: "",
             skill_description: "",
-            subSkill: ""
+            skill: ""
             // companyID: params.companyID, // Set companyID when adding a new skill
       });
     }
@@ -90,9 +90,9 @@ function SkillManagement() {
     setDialogOpen(false);
     setFormData({
         _id: " ",
-            skill_name: "",
+            course_name: "",
             skill_description: "",
-            subSkill: ""
+            skill: ""
     });
   };
 
@@ -186,7 +186,7 @@ const handleAddOrUpdateskill = async () => {
     setAlert({
       open: true,
       message: `skill "${
-        deletedSkill && deletedSkill.skill_name
+        deletedSkill && deletedSkill.course_name
       }" successfully deleted!`,
     });
     setDeletedSkill(null);
@@ -291,7 +291,7 @@ const renderSkillID = (skill) => {
             style={{ height: 55 }}
             onClick={() => handleDialogOpen("add")}
           >
-            Add Skill
+            Add Course
           </Button>
         </div>
         <TableContainer component={Paper}>
@@ -302,10 +302,10 @@ const renderSkillID = (skill) => {
                   <b>Skill ID</b>
                 </TableCell>
                 <TableCell>
-                  <b>Skill Name</b>
+                  <b>Course Name</b>
                 </TableCell>
                 <TableCell>
-                  <b>Sub Skill</b>
+                  <b>Skill</b>
                 </TableCell>
                 <TableCell>
                   <b>Action</b>
@@ -316,8 +316,8 @@ const renderSkillID = (skill) => {
               {data.map((item) => (
                 <TableRow key={item._id}>
                   <TableCell>{renderSkillID(item)}</TableCell>
-                  <TableCell>{item.skill_name}</TableCell>
-                  <TableCell>{item.subSkill}</TableCell>
+                  <TableCell>{item.course_name}</TableCell>
+                  <TableCell>{item.skill}</TableCell>
                   <TableCell>
                     <Button
                       color="success"
@@ -466,7 +466,7 @@ const renderSkillID = (skill) => {
         <DialogContent>
           <DialogContentText>
             Are you sure you want to delete Skill "
-            {deletedSkill && deletedSkill.skill_name}"?
+            {deletedSkill && deletedSkill.course_name}"?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
