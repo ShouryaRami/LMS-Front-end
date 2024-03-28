@@ -7,19 +7,18 @@ import {
 import "./App.css";
 import Login from "./Admin/Login";
 import Dashboard from "./Admin/AdminDashboard";
-import DrawerMenu from "./Admin/Drawer";
 import Dashboard2 from "./Admin/Dashboard_test";
 import Login2 from "./Admin/LoginOld";
 import CompanyDashboard from "./Company/CompanyDashboard";
 import LoginCompany from "./Company/LoginCompany";
 import CompanyRegistration from "./Company/CompanyRegistration";
 import AdminProfile from "./Admin/AdminProfile";
-import ErrorPage from "./Company/ErrorPage";
 import EnterEmail from "./Company/EnterEmail";
 import PasswordReset from "./Company/PasswordReset";
-import SkillManagement from "./Company/SkillManagement";
-import Testing from "./Company/TestingSkill";
 import Trial from "./Admin/EnhancedTable";
+import StudentTable from "./Admin/Exampls";
+import SkillManagement from "./Company/Skill/SkillManagement";
+import TestingSkill from "./Company/Skill/TestingSkill";
 
 
 function App() {
@@ -38,7 +37,6 @@ function App() {
 
             {/*Company Pages*/}
             <Route path="/Login" element={<LoginCompany />} />
-            <Route path="/errorpage" element={<ErrorPage />} />
             <Route
               path="/Company/Dashboard/:companyID"
               element={<CompanyDashboard />}
@@ -56,8 +54,8 @@ function App() {
             <Route path="/EnterEmail" element={<EnterEmail/>}/>
 
             {/*Testing */}
-            <Route path="/Trial" element={<Trial/>}/>
-            <Route path="/Testing" element={<Testing/>}/>
+            <Route path="/EnhancedTable" element={<Trial/>}/>
+            <Route path="/Testingskill" element={<TestingSkill/>}/>
           </Routes>
         </Router>
       </div>

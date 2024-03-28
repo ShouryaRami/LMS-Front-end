@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CompanyNavbar from "../Component/CompanyNavbar";
+import CompanyNavbar from "../../Component/CompanyNavbar";
 import {
   Button,
   Dialog,
@@ -263,7 +263,7 @@ const renderSkillID = (skill) => {
 
   return (
     <>
-      <CompanyNavbar />
+      <CompanyNavbar/>
       <Container
         maxWidth="xl"
         sx={{
