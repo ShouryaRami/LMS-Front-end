@@ -37,8 +37,13 @@ function App() {
 
             {/*Company Pages*/}
             <Route path="/Login" element={<LoginCompany />} />
+            <Route path="/errorpage" element={<ErrorPage />} />
             <Route
               path="/Company/Dashboard/:companyID"
+              element={<CompanyDashboard />}
+            /> */}
+            <Route
+              path="/Company/Dashboard"
               element={<CompanyDashboard />}
             />
             <Route
