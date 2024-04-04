@@ -34,11 +34,10 @@ function SkillManagement() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogType, setDialogType] = useState("");
   const [formData, setFormData] = useState({
-        _id: " ",
-        
-        course_name: "",
-        skill_description: "",
-        skill: ""
+        compnay_id: "",
+        Skill_name: [],
+        Skill_description: "",
+        Sub_skill: ""
   });
   const params = useParams();
 
@@ -47,8 +46,6 @@ function SkillManagement() {
   const [deletedSkill, setDeletedSkill] = useState(null);
   const [alert, setAlert] = useState({ open: false, message: "" });
 
-  //State for Email dialog alert
-  const [dialogalert, setDialogAlert] = useState({ open: false, message: "" });
   
   //State for refreshing page
   const [refresh, setRefresh] = useState("");
@@ -75,10 +72,10 @@ function SkillManagement() {
       setFormData(skillData);
     } else {
       setFormData({
-        _id: " ",
-            course_name: "",
-            skill_description: "",
-            skill: ""
+        compnay_id: "",
+        Skill_name: [],
+        Skill_description: "",
+        Sub_skill: ""
             // companyID: params.companyID, // Set companyID when adding a new skill
       });
     }
@@ -89,10 +86,10 @@ function SkillManagement() {
   const handleDialogClose = () => {
     setDialogOpen(false);
     setFormData({
-        _id: " ",
-            course_name: "",
-            skill_description: "",
-            skill: ""
+      compnay_id: "",
+      Skill_name: [],
+      Skill_description: "",
+      Sub_skill: ""
     });
   };
 
@@ -137,7 +134,7 @@ const handleAddOrUpdateskill = async () => {
       );
       // Update state with the updated Skill data
       const updatedData = data.map((item) =>
-        item._id === updatedSkill._id ? updatedSkill : item
+        item.compnay_id === updatedSkill.compnay_id ? updatedSkill : item
       );
       setData(updatedData);
     } catch (err) {
@@ -162,7 +159,7 @@ const handleAddOrUpdateskill = async () => {
       let res = await axios.post(
         `http://localhost:5001/company/updateSkills`,
         {
-          _id: candi_data,
+          compnay_id: candi_data,
           skill_isDeleted: true,
         },
         {
@@ -179,14 +176,14 @@ const handleAddOrUpdateskill = async () => {
     // Front end deletion
 
     const updatedskills = data.filter(
-      (skill) => skill._id !== deletedSkill._id
+      (skill) => skill.compnay_id !== deletedSkill.compnay_id
     );
     setData(updatedskills);
     setDeleteDialogOpen(false);
     setAlert({
       open: true,
       message: `skill "${
-        deletedSkill && deletedSkill.course_name
+        deletedSkill && deletedSkill.Skill_name
       }" successfully deleted!`,
     });
     setDeletedSkill(null);
@@ -194,7 +191,7 @@ const handleAddOrUpdateskill = async () => {
 
   // Function to render Skill ID in table cells
 const renderSkillID = (skill) => {
-  return skill._id ? skill._id : <div>...Loading</div>
+  return skill.compnay_id ? skill.compnay_id : <div>...Loading</div>
 };
 
   //Function for Validating Email
@@ -302,10 +299,10 @@ const renderSkillID = (skill) => {
                   <b>Skill ID</b>
                 </TableCell>
                 <TableCell>
-                  <b>Course Name</b>
+                  <b>Skill Name</b>
                 </TableCell>
                 <TableCell>
-                  <b>Skill</b>
+                  <b>Sub Skill</b>
                 </TableCell>
                 <TableCell>
                   <b>Action</b>
@@ -314,10 +311,10 @@ const renderSkillID = (skill) => {
             </TableHead>
             <TableBody>
               {data.map((item) => (
-                <TableRow key={item._id}>
+                <TableRow key={item.compnay_id}>
                   <TableCell>{renderSkillID(item)}</TableCell>
-                  <TableCell>{item.course_name}</TableCell>
-                  <TableCell>{item.skill}</TableCell>
+                  <TableCell>{item.Skill_name}</TableCell>
+                  <TableCell>{item.Sub_skill}</TableCell>
                   <TableCell>
                     <Button
                       color="success"
@@ -360,6 +357,48 @@ const renderSkillID = (skill) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
+          <TextField
+              autoFocus
+              required
+              margin="dense"
+              id="compnay_id"
+              name="compnay_id"
+              label="id"
+              type="text"
+              fullWidth
+              variant="standard"
+              value={formData.compnay_id}
+              //   onChange={handleChange}
+              InputProps={{ readOnly: true }}
+            />
+            <TextField
+              autoFocus
+              required
+              margin="dense"
+              id="Skill_name"
+              name="Skill_name"
+              label="Skill Name"
+              type="text"
+              fullWidth
+              variant="standard"
+              value={formData.Skill_name}
+              onChange={handleChange}
+              InputProps={dialogType === "info" ? { readOnly: true } : {}}
+            />
+            <TextField
+              autoFocus
+              required
+              margin="dense"
+              id="Skill_description"
+              name="Skill_description"
+              label="Skill Description"
+              type="text"
+              fullWidth
+              variant="standard"
+              value={formData.Skill_description}
+              onChange={handleChange}
+              InputProps={dialogType === "info" ? { readOnly: true } : {}}
+            />
           <div>
             <TextField
                 label={"Tasks"}
@@ -425,18 +464,6 @@ const renderSkillID = (skill) => {
         </div>
           </DialogContentText>
         </DialogContent>
-
-        {/*Alert for email*/}
-        {dialogalert.open && (
-        <Alert
-          onClose={() => setAlert({ ...dialogalert, open: false })}
-          severity="error"
-          sx={{zIndex: 9999 }}
-        >
-          {dialogalert.message}
-        </Alert>
-        )}
-
         <DialogActions>
           {dialogType === "add" || dialogType === "edit" ? (
             <Button onClick={handleDialogClose}>Cancel</Button>
@@ -466,13 +493,13 @@ const renderSkillID = (skill) => {
         <DialogContent>
           <DialogContentText>
             Are you sure you want to delete Skill "
-            {deletedSkill && deletedSkill.course_name}"?
+            {deletedSkill && deletedSkill.Skill_name}"?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>Disagree</Button>
           <Button
-            onClick={() => handleDeleteskill(deletedSkill._id)}
+            onClick={() => handleDeleteskill(deletedSkill.compnay_id)}
             color="primary"
           >
             Agree
