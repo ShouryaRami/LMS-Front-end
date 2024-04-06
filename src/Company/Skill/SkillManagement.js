@@ -34,10 +34,10 @@ function SkillManagement() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogType, setDialogType] = useState("");
   const [formData, setFormData] = useState({
-        compnay_id: "",
-        Skill_name: [],
-        Skill_description: "",
-        Sub_skill: ""
+        Skill_id:"",
+        Skill_name: "",
+        Skill_Description: "",
+        Sub_skills: [],
   });
   const params = useParams();
 
@@ -72,10 +72,10 @@ function SkillManagement() {
       setFormData(skillData);
     } else {
       setFormData({
-        compnay_id: "",
+        Skill_id:"",
         Skill_name: [],
-        Skill_description: "",
-        Sub_skill: ""
+        Skill_Description: "",
+        Sub_skills: ""
             // companyID: params.companyID, // Set companyID when adding a new skill
       });
     }
@@ -86,10 +86,10 @@ function SkillManagement() {
   const handleDialogClose = () => {
     setDialogOpen(false);
     setFormData({
-      compnay_id: "",
-      Skill_name: [],
-      Skill_description: "",
-      Sub_skill: ""
+      Skill_id:"",
+      Skill_name: "",
+      Skill_Description: "",
+      Sub_skills: []
     });
   };
 
@@ -98,51 +98,64 @@ function SkillManagement() {
   };
 
   // Function to add or update skill details
-const handleAddOrUpdateskill = async () => {
+// const handleAddOrUpdateskill = async () => {
   
-  //
-  if (dialogType === "add") {
-    const newSkill = { ...formData, companyID: params.companyID };
-    try {
-      let res = await axios.post(
-        "http://localhost:5001/company/addSkills",
-        newSkill,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("company_token")}`,
-          },
-        }
-      );
-      // Update state with the new Skill data
-      setData([...data, newSkill]); // Assuming the response does not contain the updated data
-    } catch (err) {
-      console.log("err", err);
-      // Handle error
-    }
+//   //
+//   if (dialogType === "add") {
+//     const newSkill = { ...formData, companyID: params.companyID};
+//     try {
+//       let res = await axios.post(
+//         "http://localhost:5001/company/addSkill",
+//         newSkill,
+//         {
+//           headers: {
+//             Authorization: `Bearer ${localStorage.getItem("company_token")}`,
+//           },
+//         }
+//       );
+//       // Update state with the new Skill data
+//       setData([...data, newSkill]);
+//     } catch (err) {
+//       console.log("err", err);
+//       // Handle error
+//     }
+//   } else {
+//     // Edit Logic
+//     const updatedSkill = { ...formData };
+//     try {
+//       let res = await axios.post(
+//         "http://localhost:5001/company/updateSkill",
+//         updatedSkill,
+//         {
+//           headers: {
+//             Authorization: `Bearer ${localStorage.getItem("company_token")}`,
+//           },
+//         }
+//       );
+//       // Update state with the updated Skill data
+//       const updatedData = data.map((item) =>
+//         item.Skill_id=== updatedSkill.Skill_id ? updatedSkill : item
+//       );
+//       setData(updatedData);
+//     } catch (err) {
+//       console.log("err", err);
+//       // Handle error
+//     }
+//   }
+//   setRefresh(formData);
+//   handleDialogClose();
+// };
+
+const handleAddOrUpdateskill = () => {
+  if (dialogType === 'add') {
+      const newSkill = { ...formData,Skill_id: data.length + 1 };
+      setData([...data, newSkill]);
   } else {
-    // Edit Logic
-    const updatedSkill = { ...formData };
-    try {
-      let res = await axios.post(
-        "http://localhost:5001/company/updateSkills",
-        updatedSkill,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("company_token")}`,
-          },
-        }
+      const updatedSkill = data.map((skill) =>
+          skill.Skill_id === formData.Skill_id ? { ...skill, ...formData } : skill
       );
-      // Update state with the updated Skill data
-      const updatedData = data.map((item) =>
-        item.compnay_id === updatedSkill.compnay_id ? updatedSkill : item
-      );
-      setData(updatedData);
-    } catch (err) {
-      console.log("err", err);
-      // Handle error
-    }
+      setData(updatedSkill);
   }
-  setRefresh(formData);
   handleDialogClose();
 };
 
@@ -154,13 +167,13 @@ const handleAddOrUpdateskill = async () => {
   };
 
   // Function to delete a skill
-  const handleDeleteskill = async (candi_data) => {
+  const handleDeleteskill = async (Skill_data) => {
     try {
       let res = await axios.post(
         `http://localhost:5001/company/updateSkills`,
         {
-          compnay_id: candi_data,
-          skill_isDeleted: true,
+          Skill_id: Skill_data,
+          Skill_isDeleted: true,
         },
         {
           headers: {
@@ -168,6 +181,7 @@ const handleAddOrUpdateskill = async () => {
           },
         }
       );
+      console.log(res);
     } catch (err) {
       console.log("err", err);
       // setAlert(true);
@@ -176,13 +190,13 @@ const handleAddOrUpdateskill = async () => {
     // Front end deletion
 
     const updatedskills = data.filter(
-      (skill) => skill.compnay_id !== deletedSkill.compnay_id
+      (Skill) => Skill.Skill_id !== deletedSkill.Skill_id
     );
     setData(updatedskills);
     setDeleteDialogOpen(false);
     setAlert({
       open: true,
-      message: `skill "${
+      message: `Skill "${
         deletedSkill && deletedSkill.Skill_name
       }" successfully deleted!`,
     });
@@ -190,28 +204,22 @@ const handleAddOrUpdateskill = async () => {
   };
 
   // Function to render Skill ID in table cells
-const renderSkillID = (skill) => {
-  return skill.compnay_id ? skill.compnay_id : <div>...Loading</div>
+const renderSkillID = (Skill) => {
+  return Skill.Skill_id ? Skill.Skill_id : <div>...Loading</div>
 };
-
-  //Function for Validating Email
-  const isValidEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
 
   //For re-rendering
   useEffect(() => {}, [refresh, data]);
 
 
-  //All logic for skills
+  //All logic for skills tree
 
   const [skill, setSkill] = React.useState({});
   const [val, setVal] = React.useState("");
   const [subText, setSubText] = React.useState("");
   const [texts, setTexts] = React.useState([]);
 
-  const handleClick = () => {
+  const handleSubClick = () => {
       let obj = skill;
       obj[val] = { sub: [] };
       setSkill(obj);
@@ -288,34 +296,34 @@ const renderSkillID = (skill) => {
             style={{ height: 55 }}
             onClick={() => handleDialogOpen("add")}
           >
-            Add Course
+            <AddIcon /> Add Skill
           </Button>
         </div>
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>
+                <TableCell style={{textAlign:"center"}}>
                   <b>Skill ID</b>
                 </TableCell>
-                <TableCell>
+                <TableCell style={{textAlign:"center"}}>
                   <b>Skill Name</b>
                 </TableCell>
-                <TableCell>
+                <TableCell style={{textAlign:"center"}}>
                   <b>Sub Skill</b>
                 </TableCell>
-                <TableCell>
+                <TableCell style={{textAlign:"center"}}>
                   <b>Action</b>
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data.map((item) => (
-                <TableRow key={item.compnay_id}>
-                  <TableCell>{renderSkillID(item)}</TableCell>
-                  <TableCell>{item.Skill_name}</TableCell>
-                  <TableCell>{item.Sub_skill}</TableCell>
-                  <TableCell>
+                <TableRow key={item.Skill_id}>
+                  <TableCell style={{textAlign:"center"}}>{renderSkillID(item)}</TableCell>
+                  <TableCell style={{textAlign:"center"}}>{item.Skill_name}</TableCell>
+                  <TableCell style={{textAlign:"center"}}>{item.Sub_skills.join(',')}</TableCell>
+                  <TableCell style={{textAlign:"center"}}>
                     <Button
                       color="success"
                       size="small"
@@ -361,13 +369,13 @@ const renderSkillID = (skill) => {
               autoFocus
               required
               margin="dense"
-              id="compnay_id"
-              name="compnay_id"
+              id="Skill_id"
+              name="Skill_id"
               label="id"
               type="text"
               fullWidth
               variant="standard"
-              value={formData.compnay_id}
+              value={formData.Skill_id}
               //   onChange={handleChange}
               InputProps={{ readOnly: true }}
             />
@@ -389,25 +397,29 @@ const renderSkillID = (skill) => {
               autoFocus
               required
               margin="dense"
-              id="Skill_description"
-              name="Skill_description"
+              id="Skill_Description"
+              name="Skill_Description"
               label="Skill Description"
               type="text"
               fullWidth
               variant="standard"
-              value={formData.Skill_description}
+              value={formData.Skill_Description}
               onChange={handleChange}
               InputProps={dialogType === "info" ? { readOnly: true } : {}}
             />
           <div>
             <TextField
-                label={"Tasks"}
+                autoFocus
+                required
+                margin="dense"
+                name="Skills"
+                label="Skills"
                 value={val}
                 onChange={(e) => {
                     setVal(e.target.value);
                 }}
             />
-            <Button onClick={handleClick}>
+            <Button onClick={handleSubClick}>
                 <AddIcon />
             </Button>
             <TreeView
@@ -434,7 +446,7 @@ const renderSkillID = (skill) => {
                                     <AddIcon />
                                 </Button>
                             </div>
-                            <Button onClick={() => handleDeleteParentText(parent)}>Delete Parent</Button>
+                            <Button onClick={() => handleDeleteParentText(parent)}>Delete Skill</Button>
                             <Button onClick={() => {
                                 const newParent = prompt("Enter new parent text:");
                                 if (newParent !== null && newParent !== "") {
@@ -448,13 +460,13 @@ const renderSkillID = (skill) => {
                                         nodeId={`${parent}-sub-${subIdx}`}
                                         label={sub}
                                     >
-                                        <Button onClick={() => handleDeleteSubText(parent, sub)}>Delete Sub</Button>
+                                        <Button onClick={() => handleDeleteSubText(parent, sub)}>Delete SubSkill</Button>
                                         <Button onClick={() => {
                                             const newSub = prompt("Enter new subtext:");
                                             if (newSub !== null && newSub !== "") {
                                                 handleUpdateSubText(parent, sub, newSub);
                                             }
-                                        }}>Update Sub</Button>
+                                        }}>Update SubSkill</Button>
                                     </TreeItem>
                                 ))}
                         </TreeItem>
