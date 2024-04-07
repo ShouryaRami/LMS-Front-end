@@ -166,9 +166,12 @@ function SkillManagement() {
       // );
       // setData(updatedSkill);
       let adata = data;
-      let idx = data.findIndex((obj) => obj.id == formData.id);
-      adata[idx] = { ...formData, Sub_skills: skill };
+      console.log("data---", data)
       console.log("adata---", adata)
+      let idx = data.findIndex((obj) => obj.Skill_id == formData.Skill_id);
+      console.log("Form id------",idx);
+      console.log("data to send----",adata[idx])
+      adata[idx] = { ...formData, Sub_skills: skill };
       setData(adata);
     }
     handleDialogClose();
@@ -227,10 +230,10 @@ function SkillManagement() {
 
   //All logic for skills tree
 console.log("tttt------", formData.Sub_skills ? formData.Sub_skills: [])
-  const [skill, setSkill] = React.useState(formData.Sub_skills ? formData.Sub_skills: []);
-  const [val, setVal] = React.useState("");
-  const [subText, setSubText] = React.useState("");
-  const [texts, setTexts] = React.useState([]);
+  const [skill, setSkill] = useState(formData.Sub_skills ? formData.Sub_skills: []);
+  const [val, setVal] = useState("");
+  const [subText, setSubText] = useState("");
+  const [texts, setTexts] = useState([]);
 
   const handleSubClick = () => {
     let obj = skill;

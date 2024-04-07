@@ -41,16 +41,16 @@ function App() {
               path="/Company/Dashboard/:companyID"
               element={<CompanyDashboard />}
             /> 
-            <Route
+            {/* <Route
               path="/Company/Dashboard"
               element={<CompanyDashboard />}
-            />
+            /> */}
             <Route
               path="/Company_Registration"
               element={<CompanyRegistration />}
             />
             <Route
-              path="/Company/SkillManagement"
+              path="/Company/SkillManagement/:companyID"
               element={<SkillManagement/>}
             />
             {/* <Route path="/PasswordReset" element={<PasswordReset/>} /> */}
