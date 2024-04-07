@@ -20,12 +20,12 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import SkillData from "./SkillData";
-
+import SkillData, { skill_data_main } from "./SkillData";
 import AddIcon from "@mui/icons-material/Add";
 import { TreeItem, TreeView } from "@mui/x-tree-view";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { LocalLaundryService } from "@mui/icons-material";
 
 function SkillManagement() {
   //All state for data, dialog open and close, for dilog type (add,edit and info)
@@ -53,15 +53,15 @@ function SkillManagement() {
     const fetchData = async () => {
       try {
         // Simulating fetching real data from an API endpoint
-        const rdata = await SkillData(params.companyID);
+        const rdata = await skill_data_main(params.companyID);
         let fdata = rdata.data;
         setData(fdata.response);
       } catch (err) {
-        console.log("data not fetched", err);
+        console.log("skills not fetched", err);
       }
     };
     fetchData();
-  }, [SkillData]);
+  }, [skill_data_main]);
 
   // Function to open dialog for add, edit or view Skill details
   const handleDialogOpen = (type, skillData) => {
@@ -102,62 +102,35 @@ function SkillManagement() {
     });
   };
 
-  // Function to add or update skill details
-  // const handleAddOrUpdateskill = async () => {
-
-  //   //
-  //   if (dialogType === "add") {
-  //     const newSkill = { ...formData, companyID: params.companyID};
-  //     try {
-  //       let res = await axios.post(
-  //         "http://localhost:5001/company/addSkill",
-  //         newSkill,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${localStorage.getItem("company_token")}`,
-  //           },
-  //         }
-  //       );
-  //       // Update state with the new Skill data
-  //       setData([...data, newSkill]);
-  //     } catch (err) {
-  //       console.log("err", err);
-  //       // Handle error
-  //     }
-  //   } else {
-  //     // Edit Logic
-  //     const updatedSkill = { ...formData };
-  //     try {
-  //       let res = await axios.post(
-  //         "http://localhost:5001/company/updateSkill",
-  //         updatedSkill,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${localStorage.getItem("company_token")}`,
-  //           },
-  //         }
-  //       );
-  //       // Update state with the updated Skill data
-  //       const updatedData = data.map((item) =>
-  //         item.Skill_id=== updatedSkill.Skill_id ? updatedSkill : item
-  //       );
-  //       setData(updatedData);
-  //     } catch (err) {
-  //       console.log("err", err);
-  //       // Handle error
-  //     }
-  //   }
-  //   setRefresh(formData);
-  //   handleDialogClose();
-  // };
-
-  const handleAddOrUpdateskill = () => {
+  const handleAddOrUpdateskill = async () => {
+     //! -- 
     if (dialogType === "add") {
       const newSkill = {
         ...formData,
         Skill_id: data.length + 1,
         Sub_skills: skill,
+        companyID: params.companyID
       };
+
+      try {
+          console.log('new skill',newSkill)
+          let res = await axios.post(
+            "http://localhost:5001/company/addSkill",
+            newSkill, 
+          //   {
+          //     headers: {
+          //       Authorization: `Bearer ${localStorage.getItem("company_token")}`,
+          //     },
+          //   }
+          );
+          // Update state with the new candidate data
+          console.log('yeh hai tumhara',res)
+          setData([...data, newSkill]); // Assuming the response does not contain the updated data
+        } catch (err) {
+          console.log("err", err);
+          // Handle error
+        }
+
       console.log("newSkill ------",newSkill)
       setData([...data, newSkill]);
     } else {
@@ -165,9 +138,8 @@ function SkillManagement() {
       //   skill.Skill_id === formData.Skill_id ? {  ...formData,  Sub_skills: skill } : skill
       // );
       // setData(updatedSkill);
+      const updatedSkill = {...formData};
       let adata = data;
-      console.log("data---", data)
-      console.log("adata---", adata)
       let idx = data.findIndex((obj) => obj.Skill_id == formData.Skill_id);
       console.log("Form id------",idx);
       console.log("data to send----",adata[idx])

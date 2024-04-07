@@ -18,9 +18,10 @@ import HomeIcon from '@mui/icons-material/Home';
 import LoginIcon from '@mui/icons-material/Login';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, FormControlLabel, FormGroup, Switch } from '@mui/material';
-
+import { useParams } from "react-router-dom";
 
 export default function CompanyNavbar() {
+     const params = useParams();
     const openInNewTab = (url) => {
         window.open(url, '_blank', 'noopener,noreferrer');
     };
@@ -129,7 +130,7 @@ export default function CompanyNavbar() {
                             </ListItemIcon>
                             <ListItemText primary="Company Dashboard" />
                         </ListItem>
-                        <ListItem onClick={() => { toNavigate('/Company/SkillManagement') }}>
+                        <ListItem onClick={() => { toNavigate(`/Company/SkillManagement/${params.companyID}`) }}>
                             <ListItemIcon>
                                 <DashboardIcon />
                             </ListItemIcon>
