@@ -133,7 +133,9 @@ function SkillManagement() {
 
       console.log("newSkill ------",newSkill)
       setData([...data, newSkill]);
+
     } else {
+      
       // const updatedSkill = data.map((item) =>
       //   skill.Skill_id === formData.Skill_id ? {  ...formData,  Sub_skills: skill } : skill
       // );

@@ -50,7 +50,7 @@ function LoginCompany() {
         <div className="login-container">
           <div className="login-wrapper">
             <div className="login-field">
-              <div>Enter Username</div>
+              {/* <div>Enter Username</div> */}
               <TextField
                 id="outlined-basic"
                 label="User Name"
@@ -68,7 +68,7 @@ function LoginCompany() {
               />
             </div>
             <div className="login-field">
-              <div>Enter Password</div>
+              {/* <div>Enter Password</div> */}
               <TextField
                 id="outlined-basic"
                 label="Password"
@@ -111,7 +111,7 @@ function LoginCompany() {
                 color="primary"
                 style={{
                   backgroundColor: "black",
-                  color: "white",
+                  color: "primary",
                   padding: "10px",
                   borderRadius: "5px",
                   marginBottom: "10px", // Adding space between buttons
@@ -128,7 +128,7 @@ function LoginCompany() {
               <Link
                 href="/Company_Registration"
                 underline="hover"
-                style={{ color: "white" }}
+                style={{ color: "blue" }}
               >
                 {"Sign Up?"}
               </Link>

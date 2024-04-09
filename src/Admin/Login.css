@@ -2,7 +2,8 @@
     width: 100%;
     height: auto;
     min-height: 100vh;
-    background: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+    /* background: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%); */
+    background-color: #cfd9df;
     box-sizing: border-box;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: flex;
@@ -15,7 +16,7 @@
     min-height: auto;
     height: auto;
     width: 90%;
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgb(255, 255, 255);
     display: flex;
     border-radius: 40px;
     justify-content: center;
