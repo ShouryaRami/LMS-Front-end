@@ -19,6 +19,7 @@ import Trial from "./Admin/EnhancedTable";
 import StudentTable from "./Admin/Exampls";
 import SkillManagement from "./Company/Skill/SkillManagement";
 import TestingSkill from "./Company/Skill/TestingSkill";
+import CandidateDashboard from "./Candidate/CandidateDashboard";
 
 
 function App() {
@@ -56,6 +57,9 @@ function App() {
             {/* <Route path="/PasswordReset" element={<PasswordReset/>} /> */}
             <Route path="/PasswordReset/:company_email" element={<PasswordReset/>} />
             <Route path="/EnterEmail" element={<EnterEmail/>}/>
+
+            {/*Candidate Pages*/}
+            <Route path="/Candidate/Dashboard" element={<CandidateDashboard/>}/>
 
             {/*Testing */}
             <Route path="/EnhancedTable" element={<Trial/>}/>

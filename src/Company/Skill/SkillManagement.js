@@ -322,13 +322,13 @@ console.log("tttt------", formData.Sub_skills ? formData.Sub_skills: [])
                     ))}
                   </TableCell> */}
                   <TableCell style={{ textAlign: "center" }}>
-                    <Button
+                    {/* <Button
                       color="success"
                       size="small"
                       onClick={() => handleDialogOpen("edit", item)}
                     >
                       Edit
-                    </Button>
+                    </Button> */}
                     <Button
                       color="error"
                       size="small"
