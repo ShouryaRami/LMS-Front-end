@@ -1,60 +1,82 @@
-import React from 'react';
-import { Card, CardContent, Typography, Grid } from '@mui/material';
-import CardMedia from '@mui/material/CardMedia';
-import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
-import CandidateSkillData from './CandidateData';
-import CompanyDashboard from '../Company/CompanyDashboard';
-import CompanyNavbar from '../Component/CompanyNavbar';
+import React from "react";
+import { Card, CardContent, Typography, Grid, Button, LinearProgress } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import CompanyNavbar from "../Component/CompanyNavbar";
+import CandidateSkillData from "./CandidateData";
 
 const CandidateDashboard = () => {
-  // const cardData = Array.from(Array(20).keys()).map((index) => ({
-  //   id: index + 1,
-  //   title: `Card ${index + 1}`,
-  //   description: `This is the description for Card ${index + 1}`,
-  // }));
-  const cardData=CandidateSkillData
+  const cardData = CandidateSkillData;
+  const navigate = useNavigate(); // Hook for navigation
+
+  const handleOpenSkill = (skillId) => {
+    navigate(`/Candidate/Skill/${skillId}`); // Navigate to skill details page with skillId parameter
+  };
 
   return (
     <>
-    <CompanyNavbar/>
-    <div style={{ padding: 20 }}>
-      <Grid container spacing={3}>
-        {cardData.map((card) => (
-          <Grid item key={card.Skill_id} xs={12} sm={6} md={4} lg={3}>
-            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              {/* Card Media (Image) */}
-              <CardMedia
-        component="img"
-        height="140"
-        image="https://images.unsplash.com/photo-1542773998-9325f0a098d7?auto=format&fit=crop&w=320"
-        alt=""
-      />
-
-              {/* Card Content */}
-              <CardContent sx={{ flexGrow: 1, backgroundColor: 'rgba(0,0,0,0.7)', color: '#fff' }}>
-                {/* Card Title */}
-                <Typography variant="h5" component="div">
-                  {card.Skill_name}
-                </Typography>
-
-                {/* Card Description */}
-                <Typography variant="body2" component="p" mt={1}>
-                  {card.Skill_Description}
-                </Typography>
-
-                {/* Location Icon and Text */}
-                <div style={{ display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
-                  <LocationOnRoundedIcon sx={{ marginRight: 1 }} />
-                  <Typography variant="body2" component="span">
-                    California, USA
-                  </Typography>
-                </div>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </div>
+      <CompanyNavbar />
+      <div style={{ padding: 20 }}>
+        <Grid container spacing={3}>
+          {cardData.map((card) => (
+            <Grid item key={card.Skill_id} xs={12} sm={6} md={4} lg={3}>
+              <Card
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  backgroundColor: "#f5f5f5",
+                  borderRadius: 8,
+                  boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                  transition: "transform 0.2s",
+                  "&:hover": {
+                    transform: "scale(1.02)",
+                  },
+                }}
+              >
+                <CardContent
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    flexGrow: 1,
+                  }}
+                >
+                  <div>
+                    <Typography variant="h6" component="div" sx={{ marginBottom: 1, color: "#333" }}>
+                      {card.Skill_name}
+                    </Typography>
+                    <Typography variant="body2" component="p" sx={{ color: "#666" }}>
+                      {card.Skill_Description}
+                    </Typography>
+                  </div>
+                  <LinearProgress
+                    variant="determinate"
+                    value={20}
+                    sx={{ marginTop: 5, borderRadius: 4, height: 7 }}
+                  />
+                </CardContent>
+                <Button
+                  onClick={() => handleOpenSkill(card.Skill_id)}
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#007bff",
+                    color: "#fff",
+                    borderRadius: 0,
+                    borderBottomLeftRadius: 8,
+                    borderBottomRightRadius: 8,
+                    "&:hover": {
+                      backgroundColor: "#0056b3",
+                    },
+                  }}
+                >
+                  Open Skill
+                </Button>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </div>
     </>
   );
 };

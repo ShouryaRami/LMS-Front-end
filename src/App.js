@@ -20,6 +20,7 @@ import StudentTable from "./Admin/Exampls";
 import SkillManagement from "./Company/Skill/SkillManagement";
 import TestingSkill from "./Company/Skill/TestingSkill";
 import CandidateDashboard from "./Candidate/CandidateDashboard";
+import SkillPage from "./Candidate/SkillPage";
 
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
 
             {/*Candidate Pages*/}
             <Route path="/Candidate/Dashboard" element={<CandidateDashboard/>}/>
+            <Route path="/Candidate/Skill/:skillId" element={<SkillPage/>}/>
 
             {/*Testing */}
             <Route path="/EnhancedTable" element={<Trial/>}/>

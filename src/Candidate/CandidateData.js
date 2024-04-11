@@ -4,7 +4,12 @@ const CandidateSkillData = [
           Skill_id: 1,
           Skill_name: "Web Development",
           Skill_Description: "Front-end and back-end development using HTML, CSS, JavaScript, and Python",
-          Sub_skills: []
+          Sub_skills: [{qqqq: {
+               sub: ['qq1']
+             },
+             sss: {
+               sub: ['ssq']
+             }}]
      },
      {
           Skill_id: 2,
