@@ -81,17 +81,23 @@ function PasswordReset() {
 
   return (
     <>
-    <div style={{ background: "#333", minHeight: "100vh" }}>
-      <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            paddingTop: "15%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+    <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+      }}>
+        <div
+          style={{
+            // background: 'white',
+            padding: '20px',
+            borderRadius: '8px',
+            width: '80%',
+            maxWidth: '600px',
+            backgroundColor: 'rgba(0, 0, 0, 0.3)'
           }}
         >
-          <Typography component="h1" variant="h5" style={{ color: "white" }}>
+          <Typography component="h1" color={"black"} variant="h5" style={{ color: "white" }}>
             Enter New Password
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -163,8 +169,7 @@ function PasswordReset() {
               </Button>
             </ButtonGroup>
           </Box>
-        </Box>
-      </Container>
+        </div>
     </div>
     {alert.open && (
         <Alert

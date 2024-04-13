@@ -85,14 +85,13 @@ function SkillManagement() {
   // Function to close dialog
   const handleDialogClose = () => {
     setSkill([]);
-    
+    setDialogOpen(false);
     setFormData({
       Skill_id: "",
       Skill_name: "",
       Skill_Description: "",
       Sub_skills: [],
     });
-    setDialogOpen(false);
   };
 
   const handleChange = (e) => {
@@ -323,13 +322,13 @@ console.log("tttt------", formData.Sub_skills ? formData.Sub_skills: [])
                     ))}
                   </TableCell> */}
                   <TableCell style={{ textAlign: "center" }}>
-                    <Button
+                    {/* <Button
                       color="success"
                       size="small"
                       onClick={() => handleDialogOpen("edit", item)}
                     >
                       Edit
-                    </Button>
+                    </Button> */}
                     <Button
                       color="error"
                       size="small"
@@ -413,7 +412,6 @@ console.log("tttt------", formData.Sub_skills ? formData.Sub_skills: [])
                 margin="dense"
                 name="Skills"
                 label="Skills"
-                InputProps={dialogType === "info" ? { readOnly: true } : {}}
                 value={val}
                 onChange={(e) => {
                   setVal(e.target.value);
@@ -440,7 +438,6 @@ console.log("tttt------", formData.Sub_skills ? formData.Sub_skills: [])
                         <TextField
                           label={"Sub Tasks"}
                           value={subText}
-                          InputProps={dialogType === "info" ? { readOnly: true } : {}}
                           onChange={(e) => {
                             setSubText(e.target.value);
                           }}
@@ -497,27 +494,19 @@ console.log("tttt------", formData.Sub_skills ? formData.Sub_skills: [])
           {dialogType === "add" || dialogType === "edit" ? (
             <Button onClick={handleDialogClose}>Cancel</Button>
           ) : null}
-          {dialogType === "add" 
-          ? (<Button type="submit" onClick={handleAddOrUpdateskill} color="primary">Add</Button>)
-          : dialogType === "edit"
-          ? (<Button type="submit" onClick={handleAddOrUpdateskill} color="primary">Edit</Button>)
-          : dialogType === "info"
-          ? (<Button color="primary" onClick={handleDialogClose}>Done</Button>)
-          : null
-          // <Button
-          //   type="submit"
-          //   onClick={handleAddOrUpdateskill}
-          //   color="primary"
-          // >
-          //   {dialogType === "add"
-          //     ? "Add"
-          //     : dialogType === "edit"
-          //     ? "edit"
-          //     : dialogType === "info"
-          //     ? "Done"
-          //     : {}}
-          // </Button>
-          }
+          <Button
+            type="submit"
+            onClick={handleAddOrUpdateskill}
+            color="primary"
+          >
+            {dialogType === "add"
+              ? "Add"
+              : dialogType === "edit"
+              ? "edit"
+              : dialogType === "info"
+              ? "Done"
+              : {}}
+          </Button>
         </DialogActions>
       </Dialog>
 

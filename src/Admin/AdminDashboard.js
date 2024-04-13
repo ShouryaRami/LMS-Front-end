@@ -286,7 +286,7 @@ function Dashboard() {
           border:1,
           gap:2,
           borderColor:"primary.main",
-          backgroundColor: "#90caf9"
+          // backgroundColor: "#90caf9"
       }}
       >
           <Table aria-label="simple table">

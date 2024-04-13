@@ -79,14 +79,21 @@ function EnterEmail() {
 
   return (
     <>
-      <div style={{ background: "#333", minHeight: "100vh" }}>
-        <Container component="main" maxWidth="xs">
-          <Box
-            sx={{
-              paddingTop: "15%",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+      }}>
+        {/* <Container component="main" maxWidth="xs"> */}
+          <div
+            style={{
+              // background: 'white',
+              padding: '20px',
+              borderRadius: '8px',
+              width: '80%',
+              maxWidth: '600px',
+              backgroundColor: 'rgba(0, 0, 0, 0.3)'
             }}
           >
             <Typography component="h1" variant="h5" style={{ color: "white" }}>
@@ -142,8 +149,8 @@ function EnterEmail() {
                 </Button>
               </ButtonGroup>
             </Box>
-          </Box>
-        </Container>
+          </div>
+        {/* </Container> */}
       </div>
       {alert.open && (
         <Alert

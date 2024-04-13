@@ -47,7 +47,7 @@ const SkillPage = () => {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
-        backgroundColor: 'rgba(0, 0, 0, 0.3)'
+        // backgroundColor: 'rgba(0, 0, 0, 0.3)'
       }}>
         <div style={{
           background: 'white',
