@@ -158,12 +158,15 @@ function SkillManagement() {
   };
 
   // Function to delete a skill
-  const handleDeleteskill = async (Skill_data) => {
+  const handleDeleteskill = async (Skill_id) => {
+
+
     try {
       let res = await axios.post(
-        `http://localhost:5001/company/updateSkills`,
+        `http://localhost:5001/company/updateSkill`,
         {
-          Skill_id: Skill_data,
+          company_id : params.companyID,
+          Skill_id: Skill_id,
           Skill_isDeleted: true,
         },
         {
@@ -172,7 +175,7 @@ function SkillManagement() {
           },
         }
       );
-      console.log(res);
+      console.log('deleted response : ',res);
     } catch (err) {
       console.log("err", err);
       // setAlert(true);
@@ -525,7 +528,7 @@ console.log("tttt------", formData.Sub_skills ? formData.Sub_skills: [])
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>Disagree</Button>
           <Button
-            onClick={() => handleDeleteskill(deletedSkill.compnay_id)}
+            onClick={() => handleDeleteskill(deletedSkill.Skill_id)}
             color="primary"
           >
             Agree
