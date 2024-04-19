@@ -41,10 +41,10 @@ function Login() {
 
   return (
     <div className="login-body">
-      <div className="login-box">
-        <div className="login-image">
-          <img src={LoginImage} alt="" />
-        </div>
+        <div className="login-box">
+          <div className="login-heading">
+            <h1>Login In</h1>
+          </div>
         <div className="login-container">
           <div className="login-wrapper">
             <div className="login-field">
@@ -57,9 +57,14 @@ function Login() {
                 }
                 style={{
                   width: "100%",
+                  color: "white",
                   fontWeight: "bold",
-                  color: "rgb(255, 255, 255)",
                 }}
+                InputProps={{
+                  style: { color: "white" },
+                  classes: { notchedOutline: "outlined-white" }, // Custom class for border
+                }}
+                InputLabelProps={{ style: { color: "white" } }}
                 type="text"
                 name="user_name"
                 placeholder="Enter Your User Name"
@@ -73,10 +78,15 @@ function Login() {
                 onChange={(e) =>
                   setLoginID({ ...obj, admin_password: e.target.value })
                 }
-                style={{ width: "100%" }}
-                type="password"
-                name="password"
-                placeholder="Enter Password"
+                style={{ width: "100%", color: "white" }}
+                  InputProps={{
+                    style: { color: "white" },
+                    classes: { notchedOutline: "outlined-white" }, // Custom class for border
+                  }}
+                  InputLabelProps={{ style: { color: "white" } }}
+                  type="password"
+                  name="password"
+                  placeholder="Enter Password"
               />
             </div>
             <ButtonGroup
@@ -90,8 +100,12 @@ function Login() {
               <Button
                 color="primary"
                 style={{
-                  color: "rgb(255, 255, 255)",
-                  backgroundColor: "rgb(0,0,0,0.5)",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  color: "white",
+                  padding: "10px",
+                  borderColor:"white",
+                  borderRadius: "5px",
+                  marginBottom: "10px", // Adding space between buttons
                 }}
                 className="login-button !important"
                 onClick={() => {

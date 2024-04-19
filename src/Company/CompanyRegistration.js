@@ -4,8 +4,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -33,41 +31,53 @@ export default function CompanyRegistration() {
 
   return (
     <div className='login-body'>
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            paddingTop: '15%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
+    <div className="login-box">
+      <div className="login-heading">
           <Typography component="h1" variant="h5">
             Register Your Company
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box className='login-container' component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  autoComplete="given-name"
-                  name="companyName"
-                  required
-                  fullWidth
                   id="companyName"
                   label="Company Name"
+                  varient="outlined"
+                  name="companyName"
+                  style={{
+                    width: "100%",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                  InputProps={{
+                    style: { color: "white" },
+                    classes: { notchedOutline: "outlined-white" }, // Custom class for border
+                  }}
+                  InputLabelProps={{ style: { color: "white" } }}
+                  placeholder="Enter Your Company Name"
                   autoFocus
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
-                  fullWidth
                   id="companyemail"
                   label="Email"
-                  name="lastName"
-                  autoComplete="family-name"
+                  varient="outlined"
+                  required
+                  fullWidth
+                  name="companyemail"
+                  style={{
+                    width: "100%",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                  InputProps={{
+                    style: { color: "white" },
+                    classes: { notchedOutline: "outlined-white" }, // Custom class for border
+                  }}
+                  InputLabelProps={{ style: { color: "white" } }}
+                  placeholder="Enter Email ID"
+                  autoFocus
                 />
               </Grid>
               <Grid item xs={12}>
@@ -76,19 +86,41 @@ export default function CompanyRegistration() {
                   fullWidth
                   id="contact_number"
                   label="Contact Number"
-                  name="email"
-                  autoComplete="email"
+                  name="contact_number"
+                  style={{
+                    width: "100%",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                  InputProps={{
+                    style: { color: "white" },
+                    classes: { notchedOutline: "outlined-white" }, // Custom class for border
+                  }}
+                  InputLabelProps={{ style: { color: "white" } }}
+                  placeholder="Enter Email ID"
+                  autoFocus
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="Address"
-                  label="Address"
-                  type="Address"
                   id="Address"
-                  autoComplete="new-password"
+                  label="Address"
+                  name="Address"
+                  type="Address"
+                  style={{
+                    width: "100%",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                  InputProps={{
+                    style: { color: "white" },
+                    classes: { notchedOutline: "outlined-white" }, // Custom class for border
+                  }}
+                  InputLabelProps={{ style: { color: "white" } }}
+                  placeholder="Enter Email ID"
+                  autoFocus
                 />
               </Grid> 
               <Grid item xs={12}>
@@ -98,8 +130,19 @@ export default function CompanyRegistration() {
                   id="logo"
                   label="Logo"
                   name="logo"
-                  autoComplete="logo"
-                />
+                  style={{
+                    width: "100%",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                  InputProps={{
+                    style: { color: "white" },
+                    classes: { notchedOutline: "outlined-white" }, // Custom class for border
+                  }}
+                  InputLabelProps={{ style: { color: "white" } }}
+                  placeholder="Enter Email ID"
+                  autoFocus
+                  />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -108,8 +151,19 @@ export default function CompanyRegistration() {
                   id="password"
                   label="Password"
                   name="password"
-                  autoComplete="password"
-                />
+                  style={{
+                    width: "100%",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                  InputProps={{
+                    style: { color: "white" },
+                    classes: { notchedOutline: "outlined-white" }, // Custom class for border
+                  }}
+                  InputLabelProps={{ style: { color: "white" } }}
+                  placeholder="Enter Email ID"
+                  autoFocus
+                  />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -118,8 +172,19 @@ export default function CompanyRegistration() {
                   id="password"
                   label="Verify Password"
                   name="password"
-                  autoComplete="password"
-                />
+                  style={{
+                    width: "100%",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                  InputProps={{
+                    style: { color: "white" },
+                    classes: { notchedOutline: "outlined-white" }, // Custom class for border
+                  }}
+                  InputLabelProps={{ style: { color: "white" } }}
+                  placeholder="Enter Email ID"
+                  autoFocus
+                  />
               </Grid>
             </Grid>
             <ButtonGroup
@@ -133,9 +198,15 @@ export default function CompanyRegistration() {
             <Button
                 color="primary"
                 style={{
-                  backgroundColor: "rgb(0,0,0,0.5)",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  color: "white",
+                  padding: "10px",
+                  borderColor:"white",
+                  borderRadius: "5px",
+                  marginTop:"15px", 
+                  marginBottom: "10px", // Adding space between buttons
                 }}
-                className="login-button !important"
+                className="login-button"
                 // onClick={() => {
                 //   onHandleClick();
                 // }}
@@ -153,9 +224,8 @@ export default function CompanyRegistration() {
               </Grid>
             </Grid>
           </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+      </div>
+    </div>
     </div>
   );
 }

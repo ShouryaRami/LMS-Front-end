@@ -55,8 +55,8 @@ function App() {
               path="/Company/SkillManagement/:companyID"
               element={<SkillManagement/>}
             />
-            {/* <Route path="/PasswordReset" element={<PasswordReset/>} /> */}
-            <Route path="/PasswordReset/:company_email" element={<PasswordReset/>} />
+            <Route path="/PasswordReset" element={<PasswordReset/>} />
+            {/* <Route path="/PasswordReset/:company_email" element={<PasswordReset/>} /> */}
             <Route path="/EnterEmail" element={<EnterEmail/>}/>
 
             {/*Candidate Pages*/}
