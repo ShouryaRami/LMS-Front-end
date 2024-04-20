@@ -240,6 +240,15 @@ const renderCandidateID = (candidate) => {
   //For re-rendering
   useEffect(() => {}, [refresh, data]);
 
+
+  ///For Assign Skill 
+  
+  const handleAssignDialog = (candidateData) =>{
+    setAssignDialogOpen(true)
+    }
+  const [assignDialogOpen, setAssignDialogOpen] = useState(false);
+
+
   return (
     <>
       <CompanyNavbar />
@@ -284,19 +293,19 @@ const renderCandidateID = (candidate) => {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>
+                <TableCell align="center">
                   <b>Candidate ID</b>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <b>Candidate Name</b>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <b>Email</b>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <b>Contact Number</b>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <b>Action</b>
                 </TableCell>
               </TableRow>
@@ -304,11 +313,11 @@ const renderCandidateID = (candidate) => {
             <TableBody>
               {filteredData.map((item) => (
                 <TableRow key={item._id}>
-                  <TableCell>{renderCandidateID(item)}</TableCell>
-                  <TableCell>{item.candidate_name}</TableCell>
-                  <TableCell>{item.candidate_email}</TableCell>
-                  <TableCell>{item.candidate_contact_number}</TableCell>
-                  <TableCell>
+                  <TableCell align="center">{renderCandidateID(item)}</TableCell>
+                  <TableCell align="center">{item.candidate_name}</TableCell>
+                  <TableCell align="center">{item.candidate_email}</TableCell>
+                  <TableCell align="center">{item.candidate_contact_number}</TableCell>
+                  <TableCell align="center">
                     <Button
                       color="success"
                       size="small"
@@ -328,6 +337,12 @@ const renderCandidateID = (candidate) => {
                       onClick={() => handleDialogOpen("info", item)}
                     >
                       Info
+                    </Button>
+                    <Button
+                      size="small"
+                      onClick={() => handleAssignDialog(item)}
+                    >
+                      Assign Skill
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -520,6 +535,17 @@ const renderCandidateID = (candidate) => {
           </Alert>
         )}
       </div>
+
+      <Dialog
+          open={assignDialogOpen}
+          onClose={() => setAssignDialogOpen(false)}
+          >
+            <DialogTitle>Assign Skills</DialogTitle>
+            <DialogContent>
+              Skills to assign
+              {}
+            </DialogContent>
+      </Dialog>
     </>
   );
 }

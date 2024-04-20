@@ -113,7 +113,7 @@ function SkillManagement() {
       };
 
       try {
-          console.log('new skill',newSkill)
+          // console.log('new skill',newSkill)
           let res = await axios.post(
             "http://localhost:5001/company/addSkill",
             newSkill, 
@@ -143,9 +143,10 @@ function SkillManagement() {
       const updatedSkill = {...formData};
       let adata = data;
       let idx = data.findIndex((obj) => obj.Skill_id == formData.Skill_id);
-      console.log("Form id------",idx);
-      console.log("data to send----",adata[idx])
+      // console.log("Form id------",idx);
+      // console.log("data to send----",adata[idx])
       adata[idx] = { ...formData, Sub_skills: skill };
+      console.log("updated data ------",adata)
       setData(adata);
     }
     handleDialogClose();
@@ -325,13 +326,13 @@ console.log("tttt------", formData.Sub_skills ? formData.Sub_skills: [])
                     ))}
                   </TableCell> */}
                   <TableCell style={{ textAlign: "center" }}>
-                    {/* <Button
+                    <Button
                       color="success"
                       size="small"
                       onClick={() => handleDialogOpen("edit", item)}
                     >
                       Edit
-                    </Button> */}
+                    </Button>
                     <Button
                       color="error"
                       size="small"

@@ -21,6 +21,9 @@ import SkillManagement from "./Company/Skill/SkillManagement";
 import TestingSkill from "./Company/Skill/TestingSkill";
 import CandidateDashboard from "./Candidate/CandidateDashboard";
 import SkillPage from "./Candidate/SkillPage";
+import LoginCandidate from "./Candidate/LoginCadidate";
+import PasswordReset_Candidate from "./Candidate/PasswordReset";
+import EnterEmail_Candidate from "./Candidate/EnterEmail";
 
 
 function App() {
@@ -38,7 +41,7 @@ function App() {
             <Route path='/Admin/Dashboard2' element={<Dashboard2/>}/>
 
             {/*Company Pages*/}
-            <Route path="/Login" element={<LoginCompany />} />
+            <Route path="/Company/Login" element={<LoginCompany />} />
             <Route
               path="/Company/Dashboard/:companyID"
               element={<CompanyDashboard />}
@@ -55,13 +58,16 @@ function App() {
               path="/Company/SkillManagement/:companyID"
               element={<SkillManagement/>}
             />
-            <Route path="/PasswordReset" element={<PasswordReset/>} />
-            {/* <Route path="/PasswordReset/:company_email" element={<PasswordReset/>} /> */}
-            <Route path="/EnterEmail" element={<EnterEmail/>}/>
+            <Route path="/Company/PasswordReset" element={<PasswordReset/>} />
+            <Route path="/Company/PasswordReset/:company_email" element={<PasswordReset/>} />
+            {/* <Route path="/Company/EnterEmail" element={<EnterEmail/>}/> */}
 
             {/*Candidate Pages*/}
-            <Route path="/Candidate/Dashboard" element={<CandidateDashboard/>}/>
+            <Route path="/Candidate/Dashboard/:candidateID" element={<CandidateDashboard/>}/>
             <Route path="/Candidate/Skill/:skillId" element={<SkillPage/>}/>
+            <Route path="/Candidate/Login" element={<LoginCandidate/>} />
+            <Route path="/Candidate/PasswordReset" element={<PasswordReset_Candidate/>} />
+            <Route path="/Candidate/EnterEmail" element={<EnterEmail_Candidate/>}/>
 
             {/*Testing */}
             <Route path="/EnhancedTable" element={<Trial/>}/>

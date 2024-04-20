@@ -11,10 +11,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Background from "./faded_gallery-deT70U8v4os-unsplash.jpg"
 
-function LoginCompany() {
+function LoginCandidate() {
   const [obj, setLoginID] = useState({
-    company_email: "",
-    company_password: "",
+    candidate_email: "",
+    candidate_password: "",
   });
   const [alert, setAlert] = useState(false);
 
@@ -23,12 +23,12 @@ function LoginCompany() {
   let onHandleClick = async () => {
     try {
       let res = await axios.post(
-        "http://localhost:5001/company/company_login",
+        "http://localhost:5001/candidate/candidate_login",
         obj
       );
       if (res.data.isSuccess === true) {
-        localStorage.setItem("company_token", res.data.company_token);
-        toNavigate(`/Company/Dashboard/${res.data.companyID}`);
+        localStorage.setItem("candidate_token", res.data.candidate_token);
+        toNavigate(`/Candidate/Dashboard/${res.data.candidateID}`);
       } else {
         setAlert(true);
       }
@@ -98,7 +98,7 @@ function LoginCompany() {
               label="User Name"
               variant="outlined"
               onChange={(e) =>
-                setLoginID({ ...obj, company_email: e.target.value })
+                setLoginID({ ...obj, candidate_email: e.target.value })
               }
               InputProps={{
                 style: { color: "white" },
@@ -116,7 +116,7 @@ function LoginCompany() {
               label="Password"
               variant="outlined"
               onChange={(e) =>
-                setLoginID({ ...obj, company_password: e.target.value })
+                setLoginID({ ...obj, candidate_password: e.target.value })
               }
               InputProps={{
                 style: { color: "white" },
@@ -164,7 +164,7 @@ function LoginCompany() {
                 marginBottom: "10px",
               }}
               onClick={() => {
-                toNavigate("/Company/EnterEmail");
+                toNavigate("/Candidate/EnterEmail");
               }}
             >
               Forgot Password?
@@ -213,4 +213,4 @@ function LoginCompany() {
   );
 }
 
-export default LoginCompany;
+export default LoginCandidate;
