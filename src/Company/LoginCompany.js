@@ -9,7 +9,8 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Background from "./faded_gallery-deT70U8v4os-unsplash.jpg"
+import background from '../Company/faded_gallery-deT70U8v4os-unsplash.jpg'
+
 
 function LoginCompany() {
   const [obj, setLoginID] = useState({
@@ -43,7 +44,7 @@ function LoginCompany() {
         width: "100%",
         height: "auto",
         minHeight: "100vh",
-        backgroundImage: `url(${Background})`,
+        backgroundImage: "url("+background+")",
         backgroundSize: "cover",
         backgroundPosition: "center",
         boxSizing: "border-box",
@@ -164,7 +165,7 @@ function LoginCompany() {
                 marginBottom: "10px",
               }}
               onClick={() => {
-                toNavigate("/Company/EnterEmail");
+                toNavigate("/EnterEmail");
               }}
             >
               Forgot Password?

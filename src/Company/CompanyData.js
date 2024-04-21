@@ -50,4 +50,16 @@ export const data_company_main = async (companyID) => {
   }
 };
 
+// export const skill_company_main = async (companyID) => {
+//   try {
+//     const respo = await axios.get(
+//       `http://localhost:5001/company/getAllSkills?company_id=${companyID}`
+//         );
+//     return respo;
+//     //   console.log('respo',respo.data)
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
 export default Data;

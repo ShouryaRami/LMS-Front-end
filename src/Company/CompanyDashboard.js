@@ -22,6 +22,7 @@ import Data from "./CompanyData";
 import { data_company_main } from "./CompanyData";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { skill_company_main } from "./CompanyData";
 
 function CompanyDashboard() {
   //All state for data, dialog open and close, for dilog type (add,edit and info)
@@ -46,10 +47,10 @@ function CompanyDashboard() {
 
   //State for Email dialog alert
   const [dialogalert, setDialogAlert] = useState({ open: false, message: "" });
-  
+
   //State for refreshing page
   const [refresh, setRefresh] = useState("");
-  
+
   //@ For fetching Data from API
   useEffect(() => {
     const fetchData = async () => {
@@ -104,61 +105,61 @@ function CompanyDashboard() {
   };
 
   // Function to add or update candidate details
-const handleAddOrUpdatecandidate = async () => {
-  //To validate Email
-  if (!isValidEmail(formData.candidate_email)) {
-    console.log("Invalid email format");
-    setDialogAlert({
-      open: true,
-      message:"Enter Valid Email"
-    })
-    return;
-  }
-  //!! // 
-  if (dialogType === "add") {
-    const newCandidate = { ...formData, companyID: params.companyID };
-    try {
-      let res = await axios.post(
-        "http://localhost:5001/company/addCandidates",
-        newCandidate,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("company_token")}`,
-          },
-        }
-      );
-      // Update state with the new candidate data
-      setData([...data, newCandidate]); // Assuming the response does not contain the updated data
-    } catch (err) {
-      console.log("err", err);
-      // Handle error
+  const handleAddOrUpdatecandidate = async () => {
+    //To validate Email
+    if (!isValidEmail(formData.candidate_email)) {
+      console.log("Invalid email format");
+      setDialogAlert({
+        open: true,
+        message: "Enter Valid Email"
+      })
+      return;
     }
-  } else {
-    // Edit Logic
-    const updatedCandidate = { ...formData };
-    try {
-      let res = await axios.post(
-        "http://localhost:5001/company/updateCandidates",
-        updatedCandidate,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("company_token")}`,
-          },
-        }
-      );
-      // Update state with the updated candidate data
-      const updatedData = data.map((item) =>
-        item._id === updatedCandidate._id ? updatedCandidate : item
-      );
-      setData(updatedData);
-    } catch (err) {
-      console.log("err", err);
-      // Handle error
+    //!! // 
+    if (dialogType === "add") {
+      const newCandidate = { ...formData, companyID: params.companyID };
+      try {
+        let res = await axios.post(
+          "http://localhost:5001/company/addCandidates",
+          newCandidate,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("company_token")}`,
+            },
+          }
+        );
+        // Update state with the new candidate data
+        setData([...data, newCandidate]); // Assuming the response does not contain the updated data
+      } catch (err) {
+        console.log("err", err);
+        // Handle error
+      }
+    } else {
+      // Edit Logic
+      const updatedCandidate = { ...formData };
+      try {
+        let res = await axios.post(
+          "http://localhost:5001/company/updateCandidates",
+          updatedCandidate,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("company_token")}`,
+            },
+          }
+        );
+        // Update state with the updated candidate data
+        const updatedData = data.map((item) =>
+          item._id === updatedCandidate._id ? updatedCandidate : item
+        );
+        setData(updatedData);
+      } catch (err) {
+        console.log("err", err);
+        // Handle error
+      }
     }
-  }
-  setRefresh(formData);
-  handleDialogClose();
-};
+    setRefresh(formData);
+    handleDialogClose();
+  };
 
 
   // Function to confirm deletion of a candidate
@@ -196,9 +197,8 @@ const handleAddOrUpdatecandidate = async () => {
     setDeleteDialogOpen(false);
     setAlert({
       open: true,
-      message: `candidate "${
-        deletedCandidate && deletedCandidate.candidate_name
-      }" successfully deleted!`,
+      message: `candidate "${deletedCandidate && deletedCandidate.candidate_name
+        }" successfully deleted!`,
     });
     setDeletedCandidate(null);
   };
@@ -227,9 +227,9 @@ const handleAddOrUpdatecandidate = async () => {
 
   //////////////////////
   // Function to render candidate ID in table cells
-const renderCandidateID = (candidate) => {
-  return candidate._id ? candidate._id : <div>...Loading</div>
-};
+  const renderCandidateID = (candidate) => {
+    return candidate._id ? candidate._id : <div>...Loading</div>
+  };
 
   //Function for Validating Email
   const isValidEmail = (email) => {
@@ -238,15 +238,40 @@ const renderCandidateID = (candidate) => {
   };
 
   //For re-rendering
-  useEffect(() => {}, [refresh, data]);
+  useEffect(() => { }, [refresh, data]);
 
 
   ///For Assign Skill 
-  
-  const handleAssignDialog = (candidateData) =>{
-    setAssignDialogOpen(true)
-    }
+
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
+  const [skillData, setSkillData] = useState([]);
+
+  // const handleAssignDialog = (sData) => {
+  //   setAssignDialogOpen(true)
+  //   const fetch = async () => {
+  //     try {
+  //       const mdata = await skill_company_main(params.companyID);
+  //       let fetchdata = mdata.data
+  //       setSkillData(fetchdata.response)
+  //     } catch (err) {
+  //       console.log("Skills not fetched", err)
+  //     }
+  //   };
+  //   fetch();
+  // };
+
+
+  const handleAssignDialog = (sData) => {
+    setAssignDialogOpen(true)
+    axios.get(
+        `http://localhost:5001/company/getAllSkills?company_id=${params.companyID}`
+    )
+    .then((res)=>{
+      console.log(res)
+      setSkillData(res.data.response)
+      console.log(res.data.response)
+    })
+  }
 
 
   return (
@@ -358,10 +383,10 @@ const renderCandidateID = (candidate) => {
           {dialogType === "add"
             ? "Add Company"
             : dialogType === "edit"
-            ? "Edit Company"
-            : dialogType === "info"
-            ? "Company Information"
-            : ""}
+              ? "Edit Company"
+              : dialogType === "info"
+                ? "Company Information"
+                : ""}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -408,8 +433,8 @@ const renderCandidateID = (candidate) => {
               error={!isValidEmail(formData.candidate_email)} // Check if the email is valid
               helperText={
                 formData.candidate_email && !isValidEmail(formData.candidate_email)
-                ?"Invalid Email Format"
-                : ""
+                  ? "Invalid Email Format"
+                  : ""
               }// Display error message if email is invalid
               InputProps={dialogType === "info" ? { readOnly: true } : {}}
             />
@@ -474,13 +499,13 @@ const renderCandidateID = (candidate) => {
 
         {/*Alert for email*/}
         {dialogalert.open && (
-        <Alert
-          onClose={() => setAlert({ ...dialogalert, open: false })}
-          severity="error"
-          sx={{zIndex: 9999 }}
-        >
-          {dialogalert.message}
-        </Alert>
+          <Alert
+            onClose={() => setAlert({ ...dialogalert, open: false })}
+            severity="error"
+            sx={{ zIndex: 9999 }}
+          >
+            {dialogalert.message}
+          </Alert>
         )}
 
         <DialogActions>
@@ -495,10 +520,10 @@ const renderCandidateID = (candidate) => {
             {dialogType === "add"
               ? "Add"
               : dialogType === "edit"
-              ? "edit"
-              : dialogType === "info"
-              ? "Done"
-              : {}}
+                ? "edit"
+                : dialogType === "info"
+                  ? "Done"
+                  : {}}
           </Button>
         </DialogActions>
       </Dialog>
@@ -537,14 +562,18 @@ const renderCandidateID = (candidate) => {
       </div>
 
       <Dialog
-          open={assignDialogOpen}
-          onClose={() => setAssignDialogOpen(false)}
-          >
-            <DialogTitle>Assign Skills</DialogTitle>
-            <DialogContent>
-              Skills to assign
-              {}
-            </DialogContent>
+        open={assignDialogOpen}
+        onClose={() => setAssignDialogOpen(false)}
+      >
+        <DialogTitle>Assign Skills</DialogTitle>
+        <DialogContent>
+          Skills to assign
+          {/* {skillData.map((item)=>(
+            <>
+            {item.Skill_name}
+            </>
+          ))} */}
+        </DialogContent>
       </Dialog>
     </>
   );
