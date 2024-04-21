@@ -17,12 +17,20 @@ import {
   TextField,
   Alert,
   Container,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
 } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Data from "./CompanyData";
 import { data_company_main } from "./CompanyData";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { skill_company_main } from "./CompanyData";
+import { SetMealOutlined } from "@mui/icons-material";
 
 function CompanyDashboard() {
   //All state for data, dialog open and close, for dilog type (add,edit and info)
@@ -111,11 +119,11 @@ function CompanyDashboard() {
       console.log("Invalid email format");
       setDialogAlert({
         open: true,
-        message: "Enter Valid Email"
-      })
+        message: "Enter Valid Email",
+      });
       return;
     }
-    //!! // 
+    //!! //
     if (dialogType === "add") {
       const newCandidate = { ...formData, companyID: params.companyID };
       try {
@@ -161,7 +169,6 @@ function CompanyDashboard() {
     handleDialogClose();
   };
 
-
   // Function to confirm deletion of a candidate
   const handleConfirmDelete = (candidate) => {
     setDeletedCandidate(candidate);
@@ -197,8 +204,9 @@ function CompanyDashboard() {
     setDeleteDialogOpen(false);
     setAlert({
       open: true,
-      message: `candidate "${deletedCandidate && deletedCandidate.candidate_name
-        }" successfully deleted!`,
+      message: `candidate "${
+        deletedCandidate && deletedCandidate.candidate_name
+      }" successfully deleted!`,
     });
     setDeletedCandidate(null);
   };
@@ -221,14 +229,14 @@ function CompanyDashboard() {
         item.candidate_name.toLowerCase().includes(searchItem.toLowerCase()) ||
         item.candidate_email.toLowerCase().includes(searchItem.toLowerCase()) // Filter data based on company name or email
     );
+    // console.log("hduihsdhnsdjkf------",filtered)
     setFilteredData(filtered);
   }, [searchItem, data]);
-
 
   //////////////////////
   // Function to render candidate ID in table cells
   const renderCandidateID = (candidate) => {
-    return candidate._id ? candidate._id : <div>...Loading</div>
+    return candidate._id ? candidate._id : <div>...Loading</div>;
   };
 
   //Function for Validating Email
@@ -238,41 +246,71 @@ function CompanyDashboard() {
   };
 
   //For re-rendering
-  useEffect(() => { }, [refresh, data]);
+  useEffect(() => {}, [refresh, data]);
 
-
-  ///For Assign Skill 
+  ///For Assign Skill
 
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
-  const [skillData, setSkillData] = useState([]);
+  const [skillData,setSkillData]=useState([]);
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [updatedCandidateSkill_ID, setupdatedCandidateSkill_ID] = useState('')
 
-  // const handleAssignDialog = (sData) => {
-  //   setAssignDialogOpen(true)
-  //   const fetch = async () => {
-  //     try {
-  //       const mdata = await skill_company_main(params.companyID);
-  //       let fetchdata = mdata.data
-  //       setSkillData(fetchdata.response)
-  //     } catch (err) {
-  //       console.log("Skills not fetched", err)
-  //     }
-  //   };
-  //   fetch();
-  // };
-
-
-  const handleAssignDialog = (sData) => {
-    setAssignDialogOpen(true)
-    axios.get(
-        `http://localhost:5001/company/getAllSkills?company_id=${params.companyID}`
-    )
-    .then((res)=>{
-      console.log(res)
-      setSkillData(res.data.response)
-      console.log(res.data.response)
+  const handleAssignDialog = async (sData) => {
+    setupdatedCandidateSkill_ID(sData._id)
+    setupdatedCandidateSkill_ID((aaa)=>{
+      console.log("Candidate ID",aaa)
+      return aaa
     })
-  }
 
+    // console.log("first---------",updatedCandidateSkill_ID)
+    setAssignDialogOpen(true);
+    try {
+      const res = await axios.get(`http://localhost:5001/company/getAllSkills?company_id=${params.companyID}`);
+      console.log("RESPONSE--------", res);
+  
+      const skill_name_arr = res.data.response.map((obj) => {
+        return obj.Skill_name;
+      });
+  
+      console.log("DATA I WANT", res.data.response);
+      console.log("here is skills arr", skill_name_arr);
+  
+      setSkillData(skill_name_arr);
+    } catch (error) {
+      console.error("Error fetching skills:", error);
+    }
+  };
+
+  const handleAssignSkills = async() => {
+    console.log("ID of candidate 222222222",updatedCandidateSkill_ID)
+    console.log("Selected Skills:", selectedSkills);
+    // Perform actions with selected skills (e.g., send to server)
+    try {
+      const respo = await axios.post(
+        `http://localhost:5001/Company/assignSkill/`,{
+          candidate_id : updatedCandidateSkill_ID,
+          candidate_skills : selectedSkills
+        }
+      );
+    } catch (error) {
+        console.log(error);
+    }
+
+    setAssignDialogOpen(false);
+    // setSelectedSkills([]); // Clear selected skills
+  };
+
+
+  const handleToggleSkill = (skill) => {
+    const isSelected = selectedSkills.includes(skill);
+
+    if (isSelected) {
+      setSelectedSkills(selectedSkills.filter((selected) => selected !== skill));
+    } else {
+      setSelectedSkills([...selectedSkills, skill]);
+    }
+  };
+  
 
   return (
     <>
@@ -338,10 +376,14 @@ function CompanyDashboard() {
             <TableBody>
               {filteredData.map((item) => (
                 <TableRow key={item._id}>
-                  <TableCell align="center">{renderCandidateID(item)}</TableCell>
+                  <TableCell align="center">
+                    {renderCandidateID(item)}
+                  </TableCell>
                   <TableCell align="center">{item.candidate_name}</TableCell>
                   <TableCell align="center">{item.candidate_email}</TableCell>
-                  <TableCell align="center">{item.candidate_contact_number}</TableCell>
+                  <TableCell align="center">
+                    {item.candidate_contact_number}
+                  </TableCell>
                   <TableCell align="center">
                     <Button
                       color="success"
@@ -383,10 +425,10 @@ function CompanyDashboard() {
           {dialogType === "add"
             ? "Add Company"
             : dialogType === "edit"
-              ? "Edit Company"
-              : dialogType === "info"
-                ? "Company Information"
-                : ""}
+            ? "Edit Company"
+            : dialogType === "info"
+            ? "Company Information"
+            : ""}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -432,10 +474,11 @@ function CompanyDashboard() {
               onChange={handleChange}
               error={!isValidEmail(formData.candidate_email)} // Check if the email is valid
               helperText={
-                formData.candidate_email && !isValidEmail(formData.candidate_email)
+                formData.candidate_email &&
+                !isValidEmail(formData.candidate_email)
                   ? "Invalid Email Format"
                   : ""
-              }// Display error message if email is invalid
+              } // Display error message if email is invalid
               InputProps={dialogType === "info" ? { readOnly: true } : {}}
             />
             <TextField
@@ -520,10 +563,10 @@ function CompanyDashboard() {
             {dialogType === "add"
               ? "Add"
               : dialogType === "edit"
-                ? "edit"
-                : dialogType === "info"
-                  ? "Done"
-                  : {}}
+              ? "edit"
+              : dialogType === "info"
+              ? "Done"
+              : {}}
           </Button>
         </DialogActions>
       </Dialog>
@@ -561,19 +604,36 @@ function CompanyDashboard() {
         )}
       </div>
 
-      <Dialog
-        open={assignDialogOpen}
-        onClose={() => setAssignDialogOpen(false)}
-      >
+      <Dialog open={assignDialogOpen} onClose={() => setAssignDialogOpen(false)}>
         <DialogTitle>Assign Skills</DialogTitle>
         <DialogContent>
-          Skills to assign
-          {/* {skillData.map((item)=>(
-            <>
-            {item.Skill_name}
-            </>
-          ))} */}
+          <List>
+            {skillData.map((item, index) => (
+              <ListItem key={index}>
+                <ListItemText primary={item} />
+                <ListItemSecondaryAction>
+                  <IconButton
+                    edge="end"
+                    aria-label="toggle-skill"
+                    onClick={() => handleToggleSkill(item)}
+                  >
+                    {selectedSkills.includes(item) ? (
+                      <CheckCircleIcon color="primary" />
+                    ) : (
+                      <AddIcon />
+                    )}
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))}
+          </List>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setAssignDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleAssignSkills} color="primary">
+            Assign Skills
+          </Button>
+        </DialogActions>
       </Dialog>
     </>
   );
