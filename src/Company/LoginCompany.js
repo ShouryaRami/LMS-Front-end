@@ -120,7 +120,7 @@ function LoginCompany() {
                 setLoginID({ ...obj, company_password: e.target.value })
               }
               InputProps={{
-                style: { color: "white" },
+                style: { color: "white", width:"100%" },
                 classes: { notchedOutline: "outlined-white" },
               }}
               InputLabelProps={{ style: { color: "white" } }}
@@ -134,7 +134,7 @@ function LoginCompany() {
             orientation="vertical"
             size="large"
             aria-label="large button group"
-            style={{ width: "100%" }}
+            style={{ width: "58%" }}
           >
             <Button
               color="primary"

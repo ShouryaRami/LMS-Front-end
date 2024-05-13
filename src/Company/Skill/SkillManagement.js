@@ -285,12 +285,12 @@ console.log("tttt------", formData.Sub_skills ? formData.Sub_skills: [])
           {/* Add Skill button */}
           <Button
             variant="outlined"
-            color="primary"
-            sx={{ flex: 1, marginBottom: 3 }}
-            style={{ height: 55 }}
+            color="secondary"
+            sx={{  mb: 3,flex:1 }}
+            style={{ height: 55,marginRight:"20px" }}
             onClick={() => handleDialogOpen("add")}
           >
-            <AddIcon /> Add Skill
+            <AddIcon/>
           </Button>
         </div>
         <TableContainer component={Paper}>
@@ -329,6 +329,7 @@ console.log("tttt------", formData.Sub_skills ? formData.Sub_skills: [])
                     <Button
                       color="success"
                       size="small"
+                      style={{ fontWeight: 'bold' }}
                       onClick={() => handleDialogOpen("edit", item)}
                     >
                       Edit
@@ -336,12 +337,14 @@ console.log("tttt------", formData.Sub_skills ? formData.Sub_skills: [])
                     <Button
                       color="error"
                       size="small"
+                      style={{ fontWeight: 'bold' }}
                       onClick={() => handleConfirmDelete(item)}
                     >
                       Delete
                     </Button>
                     <Button
                       size="small"
+                      style={{ fontWeight: 'bold' }}
                       onClick={() => handleDialogOpen("info", item)}
                     >
                       Info

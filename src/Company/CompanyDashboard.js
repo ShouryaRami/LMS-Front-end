@@ -333,26 +333,32 @@ function CompanyDashboard() {
             marginBottom: 3,
           }}
         >
+          {/* Add Company button */}
+          <Button
+            variant="outlined"
+            color="secondary"
+            sx={{  mb: 3 }}
+            style={{ height: 55,marginRight:"20px" }}
+            onClick={() => handleDialogOpen("add")}
+          >
+            <AddIcon/>
+          </Button>
           <TextField
             label="Search"
             variant="outlined"
             value={searchItem}
             onChange={handleSearchChange}
-            sx={{ flex: 1, marginBottom: 2.3, marginRight: 2 }}
-            style={{ height: 60 }}
-          />
-          {/* Add Company button */}
-          <Button
-            variant="outlined"
-            color="primary"
-            sx={{ flex: 1, marginBottom: 3 }}
+            sx={{ flex: 1, mb: 3}}
             style={{ height: 55 }}
-            onClick={() => handleDialogOpen("add")}
-          >
-            Add Candidate
-          </Button>
+          />
         </div>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper}
+        sx={{
+          border:1,
+          gap:2,
+          borderColor:"primary.main",
+      }}
+      >
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -388,6 +394,7 @@ function CompanyDashboard() {
                     <Button
                       color="success"
                       size="small"
+                      style={{ fontWeight: 'bold' }}
                       onClick={() => handleDialogOpen("edit", item)}
                     >
                       Edit
@@ -395,18 +402,21 @@ function CompanyDashboard() {
                     <Button
                       color="error"
                       size="small"
+                      style={{ fontWeight: 'bold' }}
                       onClick={() => handleConfirmDelete(item)}
                     >
                       Delete
                     </Button>
                     <Button
                       size="small"
+                      style={{ fontWeight: 'bold' }}
                       onClick={() => handleDialogOpen("info", item)}
                     >
                       Info
                     </Button>
                     <Button
                       size="small"
+                      style={{ fontWeight: 'bold' }}
                       onClick={() => handleAssignDialog(item)}
                     >
                       Assign Skill

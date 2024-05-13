@@ -21,6 +21,7 @@ import {
 import Data from "./Data";
 import { data_main } from "./Data";
 import axios from "axios";
+import AddIcon from '@mui/icons-material/Add';
 
 function Dashboard() {
   //All state for data, dialog open and close, for dilog type (add,edit and info)
@@ -246,12 +247,11 @@ function Dashboard() {
       <Container
         maxWidth="xl"
         sx={{
-          backgroundColor: "secondary" ,
           minHeight: "calc(100vh - 64px - 128px)",
           display: "flex",
           flexDirection: "column",
-          mt: 3,
-          mb: 4,
+          paddingTop: 3,
+          paddingBottom: 4,
         }}
       >
         <div
@@ -262,49 +262,48 @@ function Dashboard() {
             marginBottom: 3,
           }}
         >
+          {/* Add Company button */}
+          <Button
+            variant="outlined"
+            color="secondary"
+            sx={{  mb: 3 }}
+            style={{ height: 55,marginRight:"20px" }}
+            onClick={() => handleDialogOpen("add")}
+          >
+            <AddIcon/>
+          </Button>
           <TextField
             label="Search"
             variant="outlined"
             value={searchItem}
             onChange={handleSearchChange}
-            sx={{ flex: 1, mb: 2.3, mr: 2 }}
-            style={{ height: 60 }}
-          />
-          {/* Add Company button */}
-          <Button
-            variant="outlined"
-            color="secondary"
-            sx={{ flex: 1, marginBottom: 3 }}
+            sx={{ flex: 1, mb: 3}}
             style={{ height: 55 }}
-            onClick={() => handleDialogOpen("add")}
-          >
-            Add Company
-          </Button>
+          />
         </div>
         <TableContainer component={Paper}
         sx={{
           border:1,
           gap:2,
           borderColor:"primary.main",
-          // backgroundColor: "#90caf9"
       }}
       >
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>
+                <TableCell align="center">
                   <b>Company ID</b>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <b>Company Name</b>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <b>Email</b>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <b>Contact Number</b>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <b>Action</b>
                 </TableCell>
               </TableRow>
@@ -312,14 +311,15 @@ function Dashboard() {
             <TableBody>
               {filteredData.map((item) => (
                 <TableRow key={item._id}>
-                  <TableCell>{item._id}</TableCell>
-                  <TableCell>{item.company_name}</TableCell>
-                  <TableCell>{item.company_email}</TableCell>
-                  <TableCell>{item.company_contact_number}</TableCell>
-                  <TableCell>
+                  <TableCell align="center">{renderCompanyID(item)}</TableCell>
+                  <TableCell align="center">{item.company_name}</TableCell>
+                  <TableCell align="center">{item.company_email}</TableCell>
+                  <TableCell align="center">{item.company_contact_number}</TableCell>
+                  <TableCell align="center">
                     <Button
                       color="success"
                       size="small"
+                      style={{ fontWeight: 'bold' }}
                       onClick={() => handleDialogOpen("edit", item)}
                     >
                       Edit
@@ -327,12 +327,14 @@ function Dashboard() {
                     <Button
                       color="error"
                       size="small"
+                      style={{ fontWeight: 'bold' }}
                       onClick={() => handleConfirmDelete(item)}
                     >
                       Delete
                     </Button>
                     <Button
                       size="small"
+                      style={{ fontWeight: 'bold' }}
                       onClick={() => handleDialogOpen("info", item)}
                     >
                       Info
