@@ -22,8 +22,8 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   IconButton,
+  InputAdornment,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Data from "./CompanyData";
 import { data_company_main } from "./CompanyData";
@@ -31,6 +31,11 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { skill_company_main } from "./CompanyData";
 import { SetMealOutlined } from "@mui/icons-material";
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import SearchIcon from '@mui/icons-material/Search';
 
 function CompanyDashboard() {
   //All state for data, dialog open and close, for dilog type (add,edit and info)
@@ -350,6 +355,13 @@ function CompanyDashboard() {
             onChange={handleSearchChange}
             sx={{ flex: 1, mb: 3}}
             style={{ height: 55 }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
           />
         </div>
         <TableContainer component={Paper}
@@ -397,7 +409,7 @@ function CompanyDashboard() {
                       style={{ fontWeight: 'bold' }}
                       onClick={() => handleDialogOpen("edit", item)}
                     >
-                      Edit
+                      <EditIcon/>
                     </Button>
                     <Button
                       color="error"
@@ -405,14 +417,14 @@ function CompanyDashboard() {
                       style={{ fontWeight: 'bold' }}
                       onClick={() => handleConfirmDelete(item)}
                     >
-                      Delete
+                      <DeleteIcon/>
                     </Button>
                     <Button
                       size="small"
                       style={{ fontWeight: 'bold' }}
                       onClick={() => handleDialogOpen("info", item)}
                     >
-                      Info
+                      <InfoOutlinedIcon/>
                     </Button>
                     <Button
                       size="small"

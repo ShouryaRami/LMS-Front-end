@@ -17,11 +17,16 @@ import {
   TextField,
   Alert,
   Container,
+  InputAdornment,
 } from "@mui/material";
 import Data from "./Data";
 import { data_main } from "./Data";
 import axios from "axios";
 import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import SearchIcon from '@mui/icons-material/Search';
 
 function Dashboard() {
   //All state for data, dialog open and close, for dilog type (add,edit and info)
@@ -279,6 +284,13 @@ function Dashboard() {
             onChange={handleSearchChange}
             sx={{ flex: 1, mb: 3}}
             style={{ height: 55 }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
           />
         </div>
         <TableContainer component={Paper}
@@ -322,7 +334,7 @@ function Dashboard() {
                       style={{ fontWeight: 'bold' }}
                       onClick={() => handleDialogOpen("edit", item)}
                     >
-                      Edit
+                      <EditIcon/>
                     </Button>
                     <Button
                       color="error"
@@ -330,14 +342,14 @@ function Dashboard() {
                       style={{ fontWeight: 'bold' }}
                       onClick={() => handleConfirmDelete(item)}
                     >
-                      Delete
+                      <DeleteIcon/>
                     </Button>
                     <Button
                       size="small"
                       style={{ fontWeight: 'bold' }}
                       onClick={() => handleDialogOpen("info", item)}
                     >
-                      Info
+                      <InfoOutlinedIcon/>
                     </Button>
                   </TableCell>
                 </TableRow>

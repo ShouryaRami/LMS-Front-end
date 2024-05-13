@@ -26,6 +26,9 @@ import { TreeItem, TreeView } from "@mui/x-tree-view";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { LocalLaundryService } from "@mui/icons-material";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 function SkillManagement() {
   //All state for data, dialog open and close, for dilog type (add,edit and info)
@@ -332,7 +335,7 @@ console.log("tttt------", formData.Sub_skills ? formData.Sub_skills: [])
                       style={{ fontWeight: 'bold' }}
                       onClick={() => handleDialogOpen("edit", item)}
                     >
-                      Edit
+                      <EditIcon/>
                     </Button>
                     <Button
                       color="error"
@@ -340,14 +343,14 @@ console.log("tttt------", formData.Sub_skills ? formData.Sub_skills: [])
                       style={{ fontWeight: 'bold' }}
                       onClick={() => handleConfirmDelete(item)}
                     >
-                      Delete
+                      <DeleteIcon/>
                     </Button>
                     <Button
                       size="small"
                       style={{ fontWeight: 'bold' }}
                       onClick={() => handleDialogOpen("info", item)}
                     >
-                      Info
+                      <InfoOutlinedIcon/>
                     </Button>
                   </TableCell>
                 </TableRow>
