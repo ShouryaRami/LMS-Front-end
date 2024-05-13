@@ -124,7 +124,7 @@ export default function CompanyNavbar() {
                     onKeyDown={toggleDrawer(false)}
                 >
                     <List>
-                        <ListItem onClick={() => { toNavigate('/Company/Dashboard') }} >
+                        <ListItem onClick={() => { toNavigate(`/Company/Dashboard/${params.companyID}`) }} >
                             <ListItemIcon >
                                 <DashboardIcon />
                             </ListItemIcon>
@@ -136,12 +136,12 @@ export default function CompanyNavbar() {
                             </ListItemIcon>
                             <ListItemText primary="Skill Management " />
                         </ListItem>
-                        <ListItem onClick={() => { toNavigate('/Admin/Home') }}>
+                        {/* <ListItem onClick={() => { toNavigate('/Admin/Home') }}>
                             <ListItemIcon>
                                 <HomeIcon />
                             </ListItemIcon>
                             <ListItemText primary="Home" />
-                        </ListItem>
+                        </ListItem> */}
                         <ListItem onClick={() => { toNavigate('/Admin/Login') }}>
                             <ListItemIcon>
                                 <LoginIcon />

@@ -39,98 +39,100 @@ function Login() {
     }
   };
 
+
   return (
-    <div className="login-body">
-        <div className="login-box">
-          <div className="login-heading">
-            <h1>Login In</h1>
-          </div>
-        <div className="login-container">
-          <div className="login-wrapper">
-            <div className="login-field">
-              <TextField
-                id="outlined-basic"
-                label="User Name"
-                variant="outlined"
-                onChange={(e) =>
-                  setLoginID({ ...obj, admin_username: e.target.value })
-                }
-                style={{
-                  width: "100%",
-                  color: "white",
-                  fontWeight: "bold",
-                }}
-                InputProps={{
-                  style: { color: "white" },
-                  classes: { notchedOutline: "outlined-white" }, // Custom class for border
-                }}
-                InputLabelProps={{ style: { color: "white" } }}
-                type="text"
-                name="user_name"
-                placeholder="Enter Your User Name"
-              />
-            </div>
-            <div className="login-field">
-              <TextField
-                id="outlined-basic"
-                label="Password"
-                variant="outlined"
-                onChange={(e) =>
-                  setLoginID({ ...obj, admin_password: e.target.value })
-                }
-                style={{ width: "100%", color: "white" }}
-                  InputProps={{
-                    style: { color: "white" },
-                    classes: { notchedOutline: "outlined-white" }, // Custom class for border
-                  }}
-                  InputLabelProps={{ style: { color: "white" } }}
-                  type="password"
-                  name="password"
-                  placeholder="Enter Password"
-              />
-            </div>
-            <ButtonGroup
-              color="primary"
-              disabled={false}
-              orientation="vertical"
-              size="large"
-              aria-label="large button group"
-              style={{ width: "100%" }}
-            >
-              <Button
-                color="primary"
-                style={{
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
-                  color: "white",
-                  padding: "10px",
-                  borderColor:"white",
-                  borderRadius: "5px",
-                  marginBottom: "10px", // Adding space between buttons
-                }}
-                className="login-button !important"
-                onClick={() => {
-                  onHandleClick();
-                }}
-                type="submit"
-                value="login"
-              >
-                Login
-              </Button>
-              <br />
-            </ButtonGroup>
-          </div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          width: "80%",
+          maxWidth: "800px",
+          background: "rgba(74, 144, 226, 0.25)",
+          boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
+          backdropFilter: "blur(2px)",
+          WebkitBackdropFilter: "blur(2px)",
+          border: "1px solid rgba(255, 255, 255, 0.18)",
+          borderRadius: "20px",
+          padding: "20px",
+        }}
+      >
+        <div style={{ flex: 1 }}>
+          <img
+            src={LoginImage}
+            alt="Login Image"
+            style={{
+              width: "100%",
+              height: "auto",
+              borderRadius: "20px",
+              objectFit: "cover",
+            }}
+          />
         </div>
-        {alert && (
-          <div className="overlay">
-            <div className="alert-container">
+        <div style={{ flex: 1, padding: "0 20px", display: "flex", flexDirection: "column" }}>
+          <div style={{ marginBottom: "20px" }}>
+            <h1 style={{ fontSize: "36px", fontWeight: "bold", color: "white" }}>Login In</h1>
+          </div>
+          <TextField
+            label="User Name"
+            variant="outlined"
+            fullWidth
+            onChange={(e) => setLoginID({ ...obj, admin_username: e.target.value })}
+            InputProps={{ style: { color: "white" } }}
+            InputLabelProps={{ style: { color: "white" } }}
+            type="text"
+            name="user_name"
+            placeholder="Enter Your User Name"
+            style={{ marginBottom: "20px" }}
+          />
+          <TextField
+            label="Password"
+            variant="outlined"
+            fullWidth
+            onChange={(e) => setLoginID({ ...obj, admin_password: e.target.value })}
+            InputProps={{ style: { color: "white" } }}
+            InputLabelProps={{ style: { color: "white" } }}
+            type="password"
+            name="password"
+            placeholder="Enter Password"
+            style={{ marginBottom: "20px" }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={onHandleClick}
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.5)", color: "white", marginBottom: "10px" }}
+          >
+            Login
+          </Button>
+          <Button
+            color="primary"
+            onClick={() => toNavigate("/EnterEmail")}
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              color: "white",
+              marginBottom: "10px",
+              width: "100%",
+            }}
+          >
+            Forgot Password?
+          </Button>
+          {alert && (
+            <div style={{ marginTop: "20px" }}>
               <Alert severity="error" onClose={() => setAlert(false)}>
                 <AlertTitle>Error</AlertTitle>
-                Username or password is incorrect —{" "}
-                <strong>check it out!</strong>
+                Username or password is incorrect — <strong>check it out!</strong>
               </Alert>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

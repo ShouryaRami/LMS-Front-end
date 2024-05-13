@@ -1,7 +1,6 @@
 import React from "react";
 import { Card, CardContent, Typography, Grid, Button, LinearProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import CompanyNavbar from "../Component/CompanyNavbar";
 import CandidateSkillData from "./CandidateData";
 
 const CandidateDashboard = () => {
@@ -14,7 +13,7 @@ const CandidateDashboard = () => {
 
   return (
     <>
-      <CompanyNavbar />
+      <CandidateDashboard />
       <div style={{ padding: 20 }}>
         <Grid container spacing={3}>
           {cardData.map((card) => (

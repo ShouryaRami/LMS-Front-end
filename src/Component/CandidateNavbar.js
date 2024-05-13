@@ -18,9 +18,10 @@ import HomeIcon from '@mui/icons-material/Home';
 import LoginIcon from '@mui/icons-material/Login';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, FormControlLabel, FormGroup, Switch } from '@mui/material';
+import { useParams } from "react-router-dom";
 
-
-export default function AdminNavbar() {
+export default function CandidateNavbar() {
+     const params = useParams();
     const openInNewTab = (url) => {
         window.open(url, '_blank', 'noopener,noreferrer');
     };
@@ -103,7 +104,7 @@ export default function AdminNavbar() {
                                 onClose={handleClose}
                             >
                                 <MenuItem onClick={() => { toNavigate('/Admin/Profile') }}>Profile</MenuItem>
-                                <MenuItem onClick={() => { toNavigate('/Admin/Login') }}>Logout</MenuItem>
+                                <MenuItem onClick={() => { toNavigate('/Login') }}>Logout</MenuItem>
                             </Menu>
                         </div>
                     )}
@@ -123,11 +124,11 @@ export default function AdminNavbar() {
                     onKeyDown={toggleDrawer(false)}
                 >
                     <List>
-                        <ListItem onClick={() => { toNavigate('/Admin/Dashboard') }} >
+                        <ListItem onClick={() => { toNavigate(`/Candidate/Dashboard/${params.companyID}`) }} >
                             <ListItemIcon >
                                 <DashboardIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Admin Dashboard" />
+                            <ListItemText primary="Candidate Dashboard" />
                         </ListItem>
                         {/* <ListItem onClick={() => { toNavigate('/Admin/Home') }}>
                             <ListItemIcon>
